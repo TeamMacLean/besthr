@@ -1,0 +1,104 @@
+---
+title: "besthr - Generating Bootstrap Estimation Distributions of HR Data"
+author: "Dan MacLean"
+date: "12/06/2019"
+output: 
+  github_document:
+    html_preview: false
+---
+
+  <!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)](https://travis-ci.org/TeamMacLean/besthr)
+  <!-- badges: end -->
+
+## Synopsis
+
+besthr is a package that creates plots showing scored HR experiments and plots of distribution of means of ranks of HR score from bootstrapping.
+
+```{r}
+library(besthr)
+hr_data_1_file <- system.file("extdata", "example-data-1.csv", package = "besthr")
+hr_data_1 <- readr::read_csv(hr_data_1_file)
+head(hr_data_1)
+
+hr_est_1 <- estimate(hr_data_1, score, group, control = "A")
+hr_est_1
+
+plot(hr_est_1)
+
+```
+
+## Installation
+
+```{r, eval=FALSE}
+devtools::install_github("TeamMacLean/besthr")
+```
+
+## Usage 
+
+### Simplest Use Case - Two Groups, No Replicates
+
+With a data frame or similar object, use the `estimate()` function to get the bootstrap estimates of the ranked data.
+
+`estimate()` has a basic function call as follows:
+
+`estimate(data, score_column_name, group_column_name, control = control_group_name)`
+
+The first argument after the data frame is the title of the score column, the second the title of the group (or sample) column. 
+
+```{r}
+library(besthr)
+
+hr_data_1_file <- system.file("extdata", "example-data-1.csv", package = "besthr")
+hr_data_1 <- readr::read_csv(hr_data_1_file)
+head(hr_data_1)
+
+hr_est_1 <- estimate(hr_data_1, score, group, control = "A")
+hr_est_1
+
+plot(hr_est_1)
+```
+
+#### Setting Options
+
+You may select the group to set as the common reference control with `control`.
+
+```{r}
+estimate(hr_data_1, score, group, control = "B" ) %>%
+  plot()
+```
+
+You may select the number of iterations of the bootstrap to perform with `nits` and the quantiles for the confidence interval with `low` and `high`.
+
+```{r}
+estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 0.6) %>%
+  plot()
+```
+  
+### Extended Use Case - Technical Replicates
+
+You can extend the `estimate()` options to specify a third column in the data that contains technical replicate information, add the technical replicate column name after the sample column. Technical replicates are automatically merged using the `mean()` function before ranking.
+
+```{r}
+
+hr_data_3_file <- system.file("extdata", "example-data-3.csv", package = "besthr")
+hr_data_3 <- readr::read_csv(hr_data_3_file)
+head(hr_data_3)
+
+hr_est_3 <- estimate(hr_data_3, score, sample, rep, control = "A")
+
+hr_est_3
+
+plot(hr_est_3)
+
+```
+
+#### Alternate Plot Options
+
+In the case where you have use technical replicates and want to see those plotted you can use an extra plot option `which`. Set `which` to `just_data` if you wish the left panel of the plot to show all data without ranking. This will only work if you have technical replicates.
+
+```{r}
+
+hr_est_3 %>% 
+  plot(which = "just_data")
+```
