@@ -1,3 +1,5 @@
+library(rlang)
+
 #' Convert named columns to factors
 #'
 #' \code{factorise_cols} returns a copy of the passed data frame in which all
@@ -12,7 +14,7 @@ factorise_cols <- function(df, col_list ){
   not_all_na <- function(x) any(!is.na(x))
 
   for ( i in col_list){
-    df %<>% dplyr::mutate(!!(i) := as.factor(!!(i)) )
+    df <- df %>% dplyr::mutate(!!(i) := as.factor(!!(i)) )
   }
   df %>% dplyr::select_if(not_all_na)
 }
@@ -33,6 +35,7 @@ obj3 <- function(){
   estimate(d3, score, sample, rep, nits = 1000)
 }
 
+#' @export
 make_data <- function(){
   group_1 <- sample(1:10, 10, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -42,6 +45,7 @@ make_data <- function(){
   tibble::tibble(score = c(group_1, group_2), group = group)
 }
 
+#' @export
 make_data2 <- function(){
   group_1 <- sample(1:10, 12, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -57,6 +61,7 @@ make_data2 <- function(){
     )
 }
 
+#' @export
 make_data3 <- function(){
   group_1 <- sample(1:10, 12, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -131,7 +136,7 @@ bootstrap_dist <- function(df, quo_score_col, quo_group_col,
 
   lapply(1:nits, bstrap_sample, quo_score_col, quo_group_col, df,
          control = control) %>%
-    bind_rows()
+    dplyr::bind_rows()
 }
 
 #' gets confidence interval limits for means of bootstrapped ranks
@@ -216,11 +221,13 @@ group_ns <- function(df, quo_group_col){
 #'  d3 <- make_data3()
 #'  estimate(d3, score, sample, rep, nits = 1000)
 #'
+#' @export
+#'
 estimate <- function(df, ..., control = "A", nits = 100,
                      low = 0.025, high=0.975 ){
 
 
-  quo_list <- enquos(...)
+  quo_list <- dplyr::enquos(...)
   quo_score_col <- quo_list[[1]]
   quo_group_col <- quo_list[[2]]
   quo_tech_rep_col <- NULL
@@ -235,7 +242,7 @@ estimate <- function(df, ..., control = "A", nits = 100,
       dplyr::group_by(!!quo_group_col, !!quo_tech_rep_col ) %>%
       dplyr::summarize(tmp_mean = mean(!!quo_score_col)) %>%
       dplyr::select(!!quo_group_col, !!quo_score_col := tmp_mean) %>%
-      ungroup()
+      dplyr::ungroup()
   }
 
   rdf <- add_rank(gdf, quo_score_col)
@@ -260,16 +267,16 @@ estimate <- function(df, ..., control = "A", nits = 100,
   return(obj)
 }
 
-
+#' @export
 print.hrest <- function(hrest){
 
   cat( stringr::str_glue(
     "
-    #> HREST (HR Rank Score Analysis with Bootstrap Estimation)
-    #> =======================================================
-    #>
-    #> Control: {hrest$control}
-    #>\n
+    besthr (HR Rank Score Analysis with Bootstrap Estimation)
+    =========================================================
+
+    Control: {hrest$control}
+    \n
     ")
   )
 
@@ -279,23 +286,22 @@ print.hrest <- function(hrest){
   group_names <- group_names[[1, ]]
   group_names <- group_names[group_names != hrest$control]
 
-  col_name <- rlang::sym(group_col)
-  condition <- quo(hrest$control)
-
+  #col_name <- rlang::sym(group_col)
+  col_name <- rlang::ensym(group_col)
+  condition <- dplyr::quo(hrest$control)
   control_n <- hrest$group_n %>%
-    filter( UQ(col_name)  == !!(condition) )
+    dplyr::filter( !!col_name  == !!(condition) )
   control_n <- control_n$n[1]
 
-
   group_ns <- hrest$group_n %>%
-    filter( UQ(col_name) != !!(condition))
+    dplyr::filter( !!col_name != !!(condition))
 
   control_mean <- hrest$group_means %>%
-    filter( UQ(col_name) == !!(condition) )
+    dplyr::filter( !!col_name == !!(condition) )
   control_mean <- control_mean$mean[1]
 
   group_means <-hrest$group_means %>%
-    filter( UQ(col_name) != !!(condition) )
+    dplyr::filter( !!col_name != !!(condition) )
 
 
   for (i in 1:length(group_names) ){
@@ -305,17 +311,17 @@ print.hrest <- function(hrest){
     mean_difference <- control_mean - group_means$mean[i]
     cat(stringr::str_glue(
       "
-         #> Unpaired mean rank difference of {hrest$control} ({control_mean}, n={control_n}) minus {current_group} ({group_means$mean[i]}, n={group_n})
-         #> {mean_difference}
-         #> Confidence Intervals ({hrest$low}, {hrest$high})
-         #> {hrest$ci$low[i]}, {hrest$ci$high[i]}
-         #>\n
+         Unpaired mean rank difference of {hrest$control} ({control_mean}, n={control_n}) minus {current_group} ({group_means$mean[i]}, n={group_n})
+          {mean_difference}
+         Confidence Intervals ({hrest$low}, {hrest$high})
+          {hrest$ci$low[i]}, {hrest$ci$high[i]}
+         \n
          "
     ))
   }
   cat(stringr::str_glue(
     "
-    #> {hrest$nits} bootstrap resamples."
+     {hrest$nits} bootstrap resamples."
   ))
 
 }
@@ -339,8 +345,9 @@ dot_plot <- function(hrest, group_col){
     ggplot2::aes(!!group_col, rank) +
     ggplot2::geom_point(ggplot2::aes(size = count, colour = !!group_col,
                                      fill = !!group_col)) +
-    ggplot2::geom_hline(aes(yintercept = mean, colour = !!group_col),
-                        data = hrest$group_means, linetype = 3, size = 1)
+    ggplot2::geom_hline(ggplot2::aes(yintercept = mean, colour = !!group_col),
+                        data = hrest$group_means, linetype = 3, size = 1) +
+    ggplot2::theme_minimal()
 
 }
 
@@ -369,7 +376,8 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
         fill = !!group_col
       )
     ) +
-    ggplot2::facet_wrap( vars(!!group_col), strip.position = "bottom") +
+    ggplot2::theme_minimal() +
+    ggplot2::facet_wrap( ggplot2::vars(!!group_col), strip.position = "bottom") +
     ggplot2::theme(strip.background = ggplot2::element_blank(),
                    strip.placement = "outside")
 
@@ -390,14 +398,8 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #'  @param hrest the \code{hrest} object from \code{\link{estimate}}
 #'  @param which the type of left hand panel to create. Either "rank_simulation"
 #'  or "just_data"
-
+#' @export
 plot.hrest <- function(hrest, which = "rank_simulation"){
-
-  library(ggplot2)
-  library(ggridges)
-  library(gridExtra)
-  library(cowplot)
-  library(ggforce)
 
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
   group_col <- rlang::sym(group_col)
@@ -417,22 +419,23 @@ plot.hrest <- function(hrest, which = "rank_simulation"){
     a <- dot_plot(hrest, quo_group_col)
   }
 
-  legend <- cowplot::get_legend(a + theme(legend.position = "bottom"))
+
+  legend <- cowplot::get_legend(a + ggplot2::theme(legend.position = "bottom"))
 
   c <- hrest$bootstraps %>%
     ggplot2::ggplot() + ggplot2::aes(mean, UQ(group_col),
                                      fill = factor(..quantile..)) +
     ggplot2::xlim(min(hrest$ranked_data$rank), max(hrest$ranked_data$rank)) +
-    ggplot2::stat_density_ridges(geom = "density_ridges_gradient",
+    ggridges::stat_density_ridges(geom = "density_ridges_gradient",
                                  calc_ecdf = TRUE,
                                  quantiles = c(hrest$low, hrest$high)) +
     ggplot2::scale_fill_manual(values =
                                  c("#0000FFA0",  "#A0A0A0A0", "#0000FFA0") ) +
-    ggplot2::coord_flip()
+    ggplot2::coord_flip() + ggplot2::theme_minimal()
 
 
-  d <- cowplot::plot_grid(a + theme(legend.position = "none"),
-                 c + theme(legend.position = "none"),
+  d <- cowplot::plot_grid(a + ggplot2::theme(legend.position = "none"),
+                 c + ggplot2::theme(legend.position = "none"),
                  align = "vh",
                  nrow = 1, axis = c("b"))
   return(cowplot::plot_grid(d, legend, ncol = 1, rel_heights = c(1, .2)) )
