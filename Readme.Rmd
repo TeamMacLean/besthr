@@ -8,7 +8,7 @@ output:
 ---
 
   <!-- badges: start -->
-  ![Travis build status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)](https://travis-ci.org/TeamMacLean/besthr)
+  ![Travis build status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)
 
   <!-- badges: end -->
 

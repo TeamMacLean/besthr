@@ -4,7 +4,7 @@ Dan MacLean
 12/06/2019
 
 <!-- badges: start --> ![Travis build
-status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)\](<https://travis-ci.org/TeamMacLean/besthr>)
+status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)
 
 <!-- badges: end -->
 
@@ -52,7 +52,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.3475, 8.32625
+    ##  3.795, 7.52625
     ## 
     ## 100 bootstrap resamples.
 
@@ -60,7 +60,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.397
+    ## Picking joint bandwidth of 0.361
 
 ![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
@@ -125,7 +125,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.9475, 8.7075
+    ##  3.77375, 8.255
     ## 
     ## 100 bootstrap resamples.
 
@@ -133,7 +133,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.459
+    ## Picking joint bandwidth of 0.414
 
 ![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -147,7 +147,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.412
 
 ![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -160,7 +160,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.255
+    ## Picking joint bandwidth of 0.26
 
 ![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -212,12 +212,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1, 3
+    ##  1.33333333333333, 2.66666666666667
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7.33333333333333, 9
+    ##  7, 8.66666666666667
     ## 
     ## 100 bootstrap resamples.
 
@@ -225,7 +225,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.172
+    ## Picking joint bandwidth of 0.156
 
 ![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -241,6 +241,6 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.172
+    ## Picking joint bandwidth of 0.156
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
