@@ -8,7 +8,11 @@ output:
 ---
 
   <!-- badges: start -->
+<<<<<<< HEAD
   ![Travis build status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)](https://travis-ci.org/TeamMacLean/besthr)
+=======
+  [![Travis build status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)](https://travis-ci.org/TeamMacLean/besthr)
+>>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
   <!-- badges: end -->
 
 ## Synopsis
