@@ -3,13 +3,9 @@ besthr - Generating Bootstrap Estimation Distributions of HR Data
 Dan MacLean
 12/06/2019
 
-<<<<<<< HEAD
 <!-- badges: start --> ![Travis build
 status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)\](<https://travis-ci.org/TeamMacLean/besthr>)
-=======
-<!-- badges: start --> [![Travis build
-status](https://travis-ci.org/TeamMacLean/besthr.svg?branch=master)](https://travis-ci.org/TeamMacLean/besthr)
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+
 <!-- badges: end -->
 
 ## Synopsis
@@ -56,11 +52,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-<<<<<<< HEAD
-    ##  4.3475, 8.37875
-=======
-    ##  3.61625, 8.02625
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ##  4.3475, 8.32625
     ## 
     ## 100 bootstrap resamples.
 
@@ -68,11 +60,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-<<<<<<< HEAD
-    ## Picking joint bandwidth of 0.361
-=======
-    ## Picking joint bandwidth of 0.364
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ## Picking joint bandwidth of 0.397
 
 ![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
@@ -137,11 +125,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-<<<<<<< HEAD
-    ##  4.2975, 8.19124999999999
-=======
-    ##  4, 8.5525
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ##  3.9475, 8.7075
     ## 
     ## 100 bootstrap resamples.
 
@@ -149,11 +133,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-<<<<<<< HEAD
-    ## Picking joint bandwidth of 0.354
-=======
-    ## Picking joint bandwidth of 0.381
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ## Picking joint bandwidth of 0.459
 
 ![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -167,11 +147,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-<<<<<<< HEAD
-    ## Picking joint bandwidth of 0.241
-=======
-    ## Picking joint bandwidth of 0.415
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ## Picking joint bandwidth of 0.374
 
 ![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -184,11 +160,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-<<<<<<< HEAD
-    ## Picking joint bandwidth of 0.262
-=======
-    ## Picking joint bandwidth of 0.254
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ## Picking joint bandwidth of 0.255
 
 ![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -240,20 +212,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-<<<<<<< HEAD
-    ##  1, 2.66666666666667
-=======
-    ##  1, 2.84166666666666
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ##  1, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-<<<<<<< HEAD
-    ##  7.33333333333333, 8.66666666666667
-=======
-    ##  7, 8.66666666666667
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
+    ##  7.33333333333333, 9
     ## 
     ## 100 bootstrap resamples.
 
@@ -261,11 +225,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-<<<<<<< HEAD
     ## Picking joint bandwidth of 0.172
-=======
-    ## Picking joint bandwidth of 0.171
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
 
 ![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -281,10 +241,6 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-<<<<<<< HEAD
     ## Picking joint bandwidth of 0.172
-=======
-    ## Picking joint bandwidth of 0.171
->>>>>>> 473a6dbc81fd31fb1f08111c0e5b1cafd0306a44
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
