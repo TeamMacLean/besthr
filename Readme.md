@@ -52,7 +52,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.795, 7.52625
+    ##  3.9475, 8.27625
     ## 
     ## 100 bootstrap resamples.
 
@@ -60,7 +60,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.361
+    ## Picking joint bandwidth of 0.445
 
 ![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
 
@@ -125,7 +125,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.77375, 8.255
+    ##  3.92375, 8.35
     ## 
     ## 100 bootstrap resamples.
 
@@ -133,7 +133,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.414
+    ## Picking joint bandwidth of 0.391
 
 ![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -147,7 +147,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.412
+    ## Picking joint bandwidth of 0.351
 
 ![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -160,7 +160,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.26
+    ## Picking joint bandwidth of 0.262
 
 ![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -212,7 +212,7 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.33333333333333, 2.66666666666667
+    ##  1.33333333333333, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
@@ -225,7 +225,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.156
+    ## Picking joint bandwidth of 0.17
 
 ![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -241,6 +241,6 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.156
+    ## Picking joint bandwidth of 0.17
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
