@@ -1,7 +1,7 @@
 Package: besthr
 Type: Package
 Title: Generating Bootstrap Estimation Distributions of HR Data
-Version: 0.1.0
+Version: 0.2.0
 Author: Dan MacLean
 Maintainer: Dan MacLean <dan.maclean@tsl.ac.uk>
 Description: Creates plots showing scored HR experiments and plots of distribution of
