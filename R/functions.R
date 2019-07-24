@@ -377,7 +377,7 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
       )
     ) +
     ggplot2::theme_minimal() +
-    ggplot2::facet_wrap( ggplot2::vars(!!group_col), strip.position = "bottom") +
+    ggplot2::facet_wrap( ggplot2::vars(!!group_col), strip.position = "bottom", nrow = 1) +
     ggplot2::theme(strip.background = ggplot2::element_blank(),
                    strip.placement = "outside")
 
