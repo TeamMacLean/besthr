@@ -187,7 +187,7 @@ group_means <- function(df, quo_group_col){
 group_ns <- function(df, quo_group_col){
   df %>%
     dplyr::group_by(!!quo_group_col) %>%
-    dplyr::summarize(n = n() )
+    dplyr::summarize(n = dplyr::n() )
 }
 
 
@@ -283,7 +283,7 @@ print.hrest <- function(hrest){
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
 
   group_names <- hrest$group_n %>% dplyr::select(-n)
-  group_names <- group_names[[1, ]]
+  group_names <- group_names[[1, drop = TRUE]]
   group_names <- group_names[group_names != hrest$control]
 
   #col_name <- rlang::sym(group_col)
