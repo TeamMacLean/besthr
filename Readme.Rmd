@@ -14,6 +14,17 @@ output:
 
 besthr is a package that creates plots showing scored HR experiments and plots of distribution of means of ranks of HR score from bootstrapping.
 
+
+## Installation
+
+Install using `devtools` (which you will need to install if you don't already have it)
+
+```{r}
+#install.packages("devtools")
+devtools::install_github("TeamMacLean/besthr@allow_titles"
+)
+```
+
 ## Citation
 
 Please cite as 

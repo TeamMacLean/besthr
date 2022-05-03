@@ -10,6 +10,41 @@ Dan MacLean
 besthr is a package that creates plots showing scored HR experiments and
 plots of distribution of means of ranks of HR score from bootstrapping.
 
+## Installation
+
+Install using `devtools` (which you will need to install if you don’t
+already have it)
+
+``` r
+#install.packages("devtools")
+devtools::install_github("TeamMacLean/besthr@allow_titles"
+)
+```
+
+    ## Downloading GitHub repo TeamMacLean/besthr@allow_titles
+
+    ## tzdb  (0.2.0 -> 0.3.0) [CRAN]
+    ## dplyr (1.0.8 -> 1.0.9) [CRAN]
+
+    ## Installing 2 packages: tzdb, dplyr
+
+    ## Installing packages into '/Users/macleand/Library/Caches/org.R-project.R/R/renv/library/besthr-a5598785/R-4.2/aarch64-apple-darwin20'
+    ## (as 'lib' is unspecified)
+
+    ## 
+    ## The downloaded binary packages are in
+    ##  /var/folders/22/kjdvv_k14cj1m6hq5hl527qw0006zc/T//RtmpSQc1ZH/downloaded_packages
+    ## * checking for file ‘/private/var/folders/22/kjdvv_k14cj1m6hq5hl527qw0006zc/T/RtmpSQc1ZH/remotesa871587abd3a/TeamMacLean-besthr-3afae52/DESCRIPTION’ ... OK
+    ## * preparing ‘besthr’:
+    ## * checking DESCRIPTION meta-information ... OK
+    ## * checking for LF line-endings in source and make files and shell scripts
+    ## * checking for empty or unneeded directories
+    ## Omitted ‘LazyData’ from DESCRIPTION
+    ## * building ‘besthr_0.3.0.tar.gz’
+
+    ## Installing package into '/Users/macleand/Library/Caches/org.R-project.R/R/renv/library/besthr-a5598785/R-4.2/aarch64-apple-darwin20'
+    ## (as 'lib' is unspecified)
+
 ## Citation
 
 Please cite as
@@ -73,7 +108,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.92375, 7.87875
+    ##  4.15, 7.955
     ## 
     ## 100 bootstrap resamples.
 
@@ -81,9 +116,9 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ### Setting Options
 
@@ -95,9 +130,9 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.372
+    ## Picking joint bandwidth of 0.381
 
-![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 You may select the number of iterations of the bootstrap to perform with
 `nits` and the quantiles for the confidence interval with `low` and
@@ -108,9 +143,9 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.251
+    ## Picking joint bandwidth of 0.262
 
-![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ## Extended Use Case - Technical Replicates
 
@@ -163,12 +198,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1, 3
+    ##  1, 2.84166666666666
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7.33333333333333, 8.84166666666666
+    ##  7, 8.66666666666667
     ## 
     ## 100 bootstrap resamples.
 
@@ -176,9 +211,9 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.164
+    ## Picking joint bandwidth of 0.127
 
-![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ### Alternate Plot Options
 
@@ -192,9 +227,9 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.164
+    ## Picking joint bandwidth of 0.127
 
-![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ## Styling Plots
 
@@ -219,17 +254,17 @@ p + plot_annotation(title = 'A stylish besthr plot',
                     caption = 'Though this example is not meaningful')
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 ### Targetting a subplot to make theme changes
 
@@ -247,9 +282,9 @@ p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="b
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ### Changing the scale colours of a subplot
 
@@ -266,9 +301,9 @@ p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 p[[1]] <- p[[1]] + scale_colour_viridis_d()
@@ -281,9 +316,9 @@ p[[1]] <- p[[1]] + scale_colour_viridis_d()
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
 ``` r
 p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
@@ -296,9 +331,9 @@ p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-8-3.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
 
 For the percentile plot, use only `scale_colour_manual()` with specified
 colours. Annoyingly, this rewrites the other values associated with the
@@ -319,6 +354,6 @@ p[[2]] <- p[[2]] + scale_fill_manual(
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.389
 
-![](Readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](Readme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
