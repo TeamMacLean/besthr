@@ -19,7 +19,7 @@ besthr is a package that creates plots showing scored HR experiments and plots o
 
 Install using `devtools` (which you will need to install if you don't already have it)
 
-```{r}
+```{r, eval=FALSE}
 #install.packages("devtools")
 devtools::install_github("TeamMacLean/besthr@allow_titles"
 )
