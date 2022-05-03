@@ -399,6 +399,8 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #'  @param which the type of left hand panel to create. Either "rank_simulation"
 #'  or "just_data"
 #' @export
+#' @importFrom ggplot2 ggplot_add
+#' @importFrom patchwork ggplot_add.ggplot
 plot.hrest <- function(hrest, which = "rank_simulation"){
 
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
@@ -420,26 +422,25 @@ plot.hrest <- function(hrest, which = "rank_simulation"){
   }
 
 
-  legend <- cowplot::get_legend(a + ggplot2::theme(legend.position = "bottom"))
 
-  c <- hrest$bootstraps %>%
+
+  b <- hrest$bootstraps %>%
     ggplot2::ggplot() + ggplot2::aes(mean, UQ(group_col),
                                      fill = factor(..quantile..)) +
     ggplot2::xlim(min(hrest$ranked_data$rank), max(hrest$ranked_data$rank)) +
     ggridges::stat_density_ridges(geom = "density_ridges_gradient",
                                  calc_ecdf = TRUE,
-                                 quantiles = c(hrest$low, hrest$high)) +
+                                 quantiles = c(hrest$low, hrest$high) ) +
     ggplot2::scale_fill_manual(values =
-                                 c("#0000FFA0",  "#A0A0A0A0", "#0000FFA0") ) +
+                                 c("#0000FFA0",  "#A0A0A0A0", "#FF0000A0"),
+                               name = "percentile", labels=c(paste0("<", hrest$low), paste0(hrest$low, "-", hrest$high), paste0(">", hrest$high)),
+                               guide = ggplot2::guide_legend(reverse=TRUE) ) +
     ggplot2::coord_flip() + ggplot2::theme_minimal()
 
+   p <- patchwork::wrap_plots(a,b) + patchwork::guide_area() +
+                                   patchwork::plot_layout( guides="collect") +
+                                   ggplot2::theme(legend.position = "bottom")
 
-  d <- cowplot::plot_grid(a + ggplot2::theme(legend.position = "none"),
-                 c + ggplot2::theme(legend.position = "none"),
-                 align = "vh",
-                 nrow = 1, axis = c("b"))
-  return(cowplot::plot_grid(d, legend, ncol = 1, rel_heights = c(1, .2)) )
-
-
+  return(p)
 
 }
