@@ -21,7 +21,7 @@ Install using `devtools` (which you will need to install if you don't already ha
 
 ```{r, eval=FALSE}
 #install.packages("devtools")
-devtools::install_github("TeamMacLean/besthr@allow_titles"
+devtools::install_github("TeamMacLean/besthr"
 )
 ```
 

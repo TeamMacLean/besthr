@@ -1,7 +1,7 @@
 besthr - Generating Bootstrap Estimation Distributions of HR Data
 ================
 Dan MacLean
-03 May, 2022
+10 May, 2022
 
 <!-- badges: start --> <!-- badges: end -->
 
@@ -17,7 +17,7 @@ already have it)
 
 ``` r
 #install.packages("devtools")
-devtools::install_github("TeamMacLean/besthr@allow_titles"
+devtools::install_github("TeamMacLean/besthr"
 )
 ```
 
@@ -84,7 +84,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.5475, 8.52625
+    ##  4.12375, 8.6025
     ## 
     ## 100 bootstrap resamples.
 
@@ -92,7 +92,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -106,7 +106,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.371
+    ## Picking joint bandwidth of 0.338
 
 ![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -119,7 +119,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.253
+    ## Picking joint bandwidth of 0.251
 
 ![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -174,12 +174,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1, 3
+    ##  1, 2.84166666666666
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7, 8.84166666666666
+    ##  7.33333333333333, 9
     ## 
     ## 100 bootstrap resamples.
 
@@ -187,7 +187,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.178
+    ## Picking joint bandwidth of 0.172
 
 ![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -203,7 +203,7 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.178
+    ## Picking joint bandwidth of 0.172
 
 ![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -230,7 +230,7 @@ p + plot_annotation(title = 'A stylish besthr plot',
                     caption = 'Though this example is not meaningful')
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -238,7 +238,7 @@ p + plot_annotation(title = 'A stylish besthr plot',
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
@@ -258,7 +258,7 @@ p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="b
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
@@ -277,7 +277,7 @@ p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
@@ -292,7 +292,7 @@ p[[1]] <- p[[1]] + scale_colour_viridis_d()
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
@@ -307,7 +307,7 @@ p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
 
@@ -330,6 +330,6 @@ p[[2]] <- p[[2]] + scale_fill_manual(
 p
 ```
 
-    ## Picking joint bandwidth of 0.431
+    ## Picking joint bandwidth of 0.443
 
 ![](Readme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
