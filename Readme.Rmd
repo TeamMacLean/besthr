@@ -8,6 +8,8 @@ output:
 ---
 
   <!-- badges: start -->
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
+
   <!-- badges: end -->
 
 ## Synopsis
@@ -17,12 +19,14 @@ besthr is a package that creates plots showing scored HR experiments and plots o
 
 ## Installation
 
-Install using `devtools` (which you will need to install if you don't already have it)
+You can install from CRAN in the usual way.
 
 ```{r, eval=FALSE}
+install.packages("besthr")
+
+# or for the dev version
 #install.packages("devtools")
-devtools::install_github("TeamMacLean/besthr"
-)
+devtools::install_github("TeamMacLean/besthr")
 ```
 
 ## Citation

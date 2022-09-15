@@ -21,4 +21,7 @@ technical replicate on the x-axis, score on the y-axis with point size
 representing the number of observations at that point. Facets represent
 individual groups
 }
+\keyword{.data}
+\keyword{ImportFrom}
 \keyword{internal}
+\keyword{rlang}

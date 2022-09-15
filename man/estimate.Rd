@@ -4,8 +4,7 @@
 \alias{estimate}
 \title{Perform bootstrap estimation of confidence intervals of ranked HR scores}
 \usage{
-estimate(df, ..., control = "A", nits = 100, low = 0.025,
-  high = 0.975)
+estimate(df, ..., control = "A", nits = 100, low = 0.025, high = 0.975)
 }
 \arguments{
 \item{df}{data frame of score and group data. Contains minimally a score and
@@ -36,13 +35,15 @@ If technical replicates are provided in a second grouping column these will
 be averaged before proceeding.
 }
 \examples{
+
  d1 <- make_data()
  estimate(d1, score, group)
 
  d2 <- make_data2()
  estimate(d2, score_column_name, sample_column_name, rep_column_name )
 
+\donttest{
  d3 <- make_data3()
  estimate(d3, score, sample, rep, nits = 1000)
-
+}
 }

@@ -19,23 +19,28 @@ factorise_cols <- function(df, col_list ){
   df %>% dplyr::select_if(not_all_na)
 }
 
-
 obj1 <- function(){
   d1 <- make_data()
-  estimate(d1, score, group)
+  estimate(d1, "score", "group")
 }
+
 
 obj2 <- function(){
   d2 <- make_data2()
-  estimate(d2, score_column_name, sample_column_name, rep_column_name )
+  estimate(d2, "score_column_name", "sample_column_name", "rep_column_name" )
 }
 
 obj3 <- function(){
   d3 <- make_data3()
-  estimate(d3, score, sample, rep, nits = 1000)
+  estimate(d3, "score", "sample", "rep", nits = 1000)
 }
-
+#' return a sample data set of random values for two groups
+#' @examples
+#'
+#'  d1 <- make_data()
+#'
 #' @export
+#' @return tibble of random values for two groups
 make_data <- function(){
   group_1 <- sample(1:10, 10, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -44,8 +49,14 @@ make_data <- function(){
   group <- rep(c("A", "B"), each = 10)
   tibble::tibble(score = c(group_1, group_2), group = group)
 }
-
+#' return a sample data set of random values for two groups with three technical reps per group
+#'
+#' @examples
+#'
+#'  d2 <- make_data2()
+#'
 #' @export
+#' @return tibble of random values for two groups with three technical reps per group
 make_data2 <- function(){
   group_1 <- sample(1:10, 12, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -60,8 +71,14 @@ make_data2 <- function(){
     rep_column_name = tech_rep
     )
 }
-
+#' return a sample data set of random values for three groups with three technical reps per group
+#'
+#'  @examples
+#'
+#'  d3 <- make_data3()
+#'
 #' @export
+#' @return tibble of random values for three groups with three technical reps per group
 make_data3 <- function(){
   group_1 <- sample(1:10, 12, replace = TRUE,
                     prob = c(rep(0.1/7, 7), rep(0.3, 3))
@@ -81,9 +98,10 @@ make_data3 <- function(){
 #'
 #' \code{add_rank} returns a copy of the passed data frame containing a new
 #'  column called \code{rank} which has the ranks of the named score column
-#'  @param df data frame
-#'  @param quo_score_col quoted score column name
-#'  @keywords internal
+#'
+#' @param df data frame
+#' @param quo_score_col quoted score column name
+#' @keywords internal
 #'
 add_rank <- function(df, quo_score_col){
   df %>% dplyr::mutate(rank = rank(!!quo_score_col))
@@ -106,14 +124,15 @@ add_rank <- function(df, quo_score_col){
 #' @param control character naming the control group that will be removed prior
 #' to bootstrapping
 #' @keywords internal
+#' @importFrom rlang .data
 bstrap_sample <- function(iteration, quo_score_col,
                           quo_group_col, df, control = "A"){
 
   df %>%
     dplyr::filter(!!quo_group_col != control) %>%
     dplyr::group_by(!!quo_group_col) %>%
-    dplyr::mutate(resample = sample(rank, length(rank), replace = TRUE)) %>%
-    dplyr::summarize(mean = mean(resample), iteration = iteration)
+    dplyr::mutate(resample = sample(.data$rank, length(.data$rank), replace = TRUE)) %>%
+    dplyr::summarize(mean = mean(.data$resample), iteration = iteration)
 
 
 }
@@ -152,8 +171,8 @@ bootstrap_dist <- function(df, quo_score_col, quo_group_col,
 conf_intervals <- function(df, quo_group_col, low = 0.05, high=0.95){
   df %>% dplyr::group_by(!!quo_group_col) %>%
     dplyr::summarise(
-      low = quantile(mean, prob = low, names = FALSE),
-      high = quantile(mean, prob = high, names = FALSE),
+      low = stats::quantile(mean, prob = low, names = FALSE),
+      high = stats::quantile(mean, prob = high, names = FALSE),
       mean = mean(mean)
 
     )
@@ -212,17 +231,21 @@ group_ns <- function(df, quo_group_col){
 #' @param high the high probability value of the quantile
 #' @return a list object of class "hrest"
 #' @examples
+#'
 #'  d1 <- make_data()
 #'  estimate(d1, score, group)
 #'
 #'  d2 <- make_data2()
 #'  estimate(d2, score_column_name, sample_column_name, rep_column_name )
 #'
+#' \donttest{
 #'  d3 <- make_data3()
 #'  estimate(d3, score, sample, rep, nits = 1000)
-#'
+#' }
 #' @export
 #'
+#' @importFrom rlang :=
+#' @importFrom rlang .data
 estimate <- function(df, ..., control = "A", nits = 100,
                      low = 0.025, high=0.975 ){
 
@@ -241,7 +264,7 @@ estimate <- function(df, ..., control = "A", nits = 100,
     gdf <- df %>%
       dplyr::group_by(!!quo_group_col, !!quo_tech_rep_col ) %>%
       dplyr::summarize(tmp_mean = mean(!!quo_score_col)) %>%
-      dplyr::select(!!quo_group_col, !!quo_score_col := tmp_mean) %>%
+      dplyr::select(!!quo_group_col, !!quo_score_col := .data$tmp_mean) %>%
       dplyr::ungroup()
   }
 
@@ -267,9 +290,20 @@ estimate <- function(df, ..., control = "A", nits = 100,
   return(obj)
 }
 
+#' print a summary of the hrest object
+#' @param x hrest object
+#' @param ... other parameters
+#' @examples
+#'
+#'  d1 <- make_data()
+#'  hr_est <- estimate(d1, score, group)
+#'  print(hr_est)
+#'
 #' @export
-print.hrest <- function(hrest){
-
+#' @importFrom rlang .data
+#' @return null
+print.hrest <- function(x, ...){
+  hrest <- x
   cat( stringr::str_glue(
     "
     besthr (HR Rank Score Analysis with Bootstrap Estimation)
@@ -282,7 +316,7 @@ print.hrest <- function(hrest){
 
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
 
-  group_names <- hrest$group_n %>% dplyr::select(-n)
+  group_names <- hrest$group_n %>% dplyr::select(-.data$n)
   group_names <- group_names[[1, drop = TRUE]]
   group_names <- group_names[group_names != hrest$control]
 
@@ -336,14 +370,14 @@ print.hrest <- function(hrest){
 #' @param hrest the hrest object from \code{estimate}
 #' @param group_col quoted group column name
 #' @keywords internal
-#'
+#' importFrom rlang .data
 dot_plot <- function(hrest, group_col){
   hrest$ranked_data %>%
     dplyr::group_by(!!group_col, rank) %>%
     dplyr::summarise(count = dplyr::n() ) %>%
     ggplot2::ggplot() +
     ggplot2::aes(!!group_col, rank) +
-    ggplot2::geom_point(ggplot2::aes(size = count, colour = !!group_col,
+    ggplot2::geom_point(ggplot2::aes(size = .data$count, colour = !!group_col,
                                      fill = !!group_col)) +
     ggplot2::geom_hline(ggplot2::aes(yintercept = mean, colour = !!group_col),
                         data = hrest$group_means, linetype = 3, size = 1) +
@@ -362,6 +396,7 @@ dot_plot <- function(hrest, group_col){
 #' @param group_col quoted group column name
 #' @param tech_rep_col quoted tech replicate column name
 #' @keywords internal
+#' ImportFrom rlang .data
 tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 
   hrest$original_data %>% factorise_cols( list(group_col, tech_rep_col)) %>%
@@ -371,7 +406,7 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
     ggplot2::aes( !!tech_rep_col, !!score_col )  +
     ggplot2::geom_point(
       ggplot2::aes(
-        size = count,
+        size = .data$count,
         colour = !!group_col,
         fill = !!group_col
       )
@@ -395,14 +430,21 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #' rank bootstrap distribution and confidence interval boundaries for all non-
 #' control groups.
 #'
-#'  @param hrest the \code{hrest} object from \code{\link{estimate}}
-#'  @param which the type of left hand panel to create. Either "rank_simulation"
+#' @param x the \code{hrest} object from \code{\link{estimate}}
+#' @param which the type of left hand panel to create. Either "rank_simulation"
 #'  or "just_data"
+#' @param ... Other parameters
+#' @examples
+#'
+#'  d1 <- make_data()
+#'  hr_est <- estimate(d1, score, group)
+#'  plot(hr_est)
+#'
 #' @export
-#' @importFrom ggplot2 ggplot_add
-#' @importFrom patchwork ggplot_add.ggplot
-plot.hrest <- function(hrest, which = "rank_simulation"){
-
+#' @return ggplot object
+#' @importFrom stats quantile
+plot.hrest <- function(x, ...,  which = "rank_simulation"){
+  hrest <- x
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
   group_col <- rlang::sym(group_col)
 
@@ -425,8 +467,8 @@ plot.hrest <- function(hrest, which = "rank_simulation"){
 
 
   b <- hrest$bootstraps %>%
-    ggplot2::ggplot() + ggplot2::aes(mean, UQ(group_col),
-                                     fill = factor(..quantile..)) +
+    ggplot2::ggplot() + ggplot2::aes(mean, rlang::UQ(group_col),
+                                     fill = factor("..quantile..")) +
     ggplot2::xlim(min(hrest$ranked_data$rank), max(hrest$ranked_data$rank)) +
     ggridges::stat_density_ridges(geom = "density_ridges_gradient",
                                  calc_ecdf = TRUE,

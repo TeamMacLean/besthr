@@ -6,10 +6,13 @@
 \usage{
 add_rank(df, quo_score_col)
 }
+\arguments{
+\item{df}{data frame}
+
+\item{quo_score_col}{quoted score column name}
+}
 \description{
 \code{add_rank} returns a copy of the passed data frame containing a new
  column called \code{rank} which has the ranks of the named score column
- @param df data frame
- @param quo_score_col quoted score column name
- @keywords internal
 }
+\keyword{internal}

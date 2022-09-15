@@ -2,28 +2,24 @@ Package: besthr
 Type: Package
 Title: Generating Bootstrap Estimation Distributions of HR Data
 Version: 0.3.0
-Author: Dan MacLean
-Maintainer: Dan MacLean <dan.maclean@tsl.ac.uk>
+Authors@R: c(person("Dan", "MacLean", role = c("aut","cre"), email = "dan.maclean@tsl.ac.uk") )
 Description: Creates plots showing scored HR experiments and plots of distribution of
-    means of ranks of HR score from bootstrapping.
+    means of ranks of HR score from bootstrapping. Authors (2019) <doi:10.5281/zenodo.3374507>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports:
-    cowplot,
     dplyr,
-    ggforce,
     ggplot2,
     ggridges,
-    gridExtra,
     magrittr,
     patchwork,
-    purrr,
-    readr,
     rlang,
-    tidyr
-RoxygenNote: 6.1.1
+    stringr,
+    tibble
+RoxygenNote: 7.1.2
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    readr
 VignetteBuilder: knitr

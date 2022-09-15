@@ -4,7 +4,18 @@
 \alias{plot.hrest}
 \title{plots the \code{hrest} object}
 \usage{
-\method{plot}{hrest}(hrest, which = "rank_simulation")
+\method{plot}{hrest}(x, ..., which = "rank_simulation")
+}
+\arguments{
+\item{x}{the \code{hrest} object from \code{\link{estimate}}}
+
+\item{...}{Other parameters}
+
+\item{which}{the type of left hand panel to create. Either "rank_simulation"
+or "just_data"}
+}
+\value{
+ggplot object
 }
 \description{
 returns a ggplot object representing the hrest object from
@@ -17,8 +28,10 @@ replicates are displayed as is. In each case, the right hand panel shows the
 rank bootstrap distribution and confidence interval boundaries for all non-
 control groups.
 }
-\details{
-@param hrest the \code{hrest} object from \code{\link{estimate}}
- @param which the type of left hand panel to create. Either "rank_simulation"
- or "just_data"
+\examples{
+
+ d1 <- make_data()
+ hr_est <- estimate(d1, score, group)
+ plot(hr_est)
+
 }

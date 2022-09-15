@@ -6,6 +6,9 @@
 \usage{
 lhs \%>\% rhs
 }
+\value{
+result of previous expression
+}
 \description{
 See \code{magrittr::\link[magrittr]{\%>\%}} for details.
 }

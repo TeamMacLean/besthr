@@ -4,8 +4,7 @@
 \alias{bootstrap_dist}
 \title{runs bootstrapping of ranks}
 \usage{
-bootstrap_dist(df, quo_score_col, quo_group_col, nits = 10,
-  control = "A")
+bootstrap_dist(df, quo_score_col, quo_group_col, nits = 10, control = "A")
 }
 \arguments{
 \item{df}{input data frame}

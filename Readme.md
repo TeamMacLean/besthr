@@ -1,9 +1,12 @@
 besthr - Generating Bootstrap Estimation Distributions of HR Data
 ================
 Dan MacLean
-10 May, 2022
+15 September, 2022
 
-<!-- badges: start --> <!-- badges: end -->
+<!-- badges: start -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
+
+<!-- badges: end -->
 
 ## Synopsis
 
@@ -12,13 +15,14 @@ plots of distribution of means of ranks of HR score from bootstrapping.
 
 ## Installation
 
-Install using `devtools` (which you will need to install if you don’t
-already have it)
+You can install from CRAN in the usual way.
 
 ``` r
+install.packages("besthr")
+
+# or for the dev version
 #install.packages("devtools")
-devtools::install_github("TeamMacLean/besthr"
-)
+devtools::install_github("TeamMacLean/besthr")
 ```
 
 ## Citation
@@ -84,7 +88,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.12375, 8.6025
+    ##  3.97375, 8.25
     ## 
     ## 100 bootstrap resamples.
 
@@ -92,7 +96,21 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Warning: Prefixing `UQ()` with the rlang namespace is deprecated as of rlang 0.3.0.
+    ## Please use the non-prefixed form or `!!` instead.
+    ## 
+    ##   # Bad:
+    ##   rlang::expr(mean(rlang::UQ(var) * 100))
+    ## 
+    ##   # Ok:
+    ##   rlang::expr(mean(UQ(var) * 100))
+    ## 
+    ##   # Good:
+    ##   rlang::expr(mean(!!var * 100))
+    ## 
+    ## This warning is displayed once per session.
+
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -106,7 +124,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.338
+    ## Picking joint bandwidth of 0.384
 
 ![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -119,7 +137,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.251
+    ## Picking joint bandwidth of 0.253
 
 ![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -179,7 +197,7 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7.33333333333333, 9
+    ##  7, 9
     ## 
     ## 100 bootstrap resamples.
 
@@ -187,7 +205,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.172
+    ## Picking joint bandwidth of 0.169
 
 ![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -203,7 +221,7 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.172
+    ## Picking joint bandwidth of 0.169
 
 ![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -230,7 +248,7 @@ p + plot_annotation(title = 'A stylish besthr plot',
                     caption = 'Though this example is not meaningful')
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -238,7 +256,7 @@ p + plot_annotation(title = 'A stylish besthr plot',
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
@@ -258,7 +276,7 @@ p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="b
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
@@ -277,7 +295,7 @@ p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
@@ -292,7 +310,7 @@ p[[1]] <- p[[1]] + scale_colour_viridis_d()
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-2.png)<!-- -->
 
@@ -307,7 +325,7 @@ p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-9-3.png)<!-- -->
 
@@ -330,6 +348,6 @@ p[[2]] <- p[[2]] + scale_fill_manual(
 p
 ```
 
-    ## Picking joint bandwidth of 0.443
+    ## Picking joint bandwidth of 0.451
 
 ![](Readme_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->

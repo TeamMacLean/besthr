@@ -17,4 +17,7 @@ x-axis and rank on the y-axis. Point size indicates the number of
 observations seen at that point. A per group horizontal line shows the group
 ranked mean
 }
+\keyword{.data}
+\keyword{importFrom}
 \keyword{internal}
+\keyword{rlang}
