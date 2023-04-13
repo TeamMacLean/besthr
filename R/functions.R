@@ -471,7 +471,7 @@ plot.hrest <- function(x, ...,  which = "rank_simulation"){
 
   b <- hrest$bootstraps %>%
     ggplot2::ggplot() + ggplot2::aes(mean, !!group_col,
-                                     fill = factor(stat(quantile))) +
+                                     fill = factor(after_stat(quantile))) +
     ggplot2::xlim(min(hrest$ranked_data$rank), max(hrest$ranked_data$rank)) +
     ggridges::stat_density_ridges(geom = "density_ridges_gradient",
                                  calc_ecdf = TRUE,
