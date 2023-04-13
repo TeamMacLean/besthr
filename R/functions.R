@@ -445,7 +445,7 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #' @export
 #' @return ggplot object
 #' @importFrom stats quantile
-#' @importFrom ggplot2 stat
+#' @importFrom ggplot2 after_stat
 plot.hrest <- function(x, ...,  which = "rank_simulation"){
   hrest <- x
   group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
