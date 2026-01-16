@@ -84,8 +84,64 @@ In the case where you have use technical replicates and want to see those plotte
 
 ```{r, fig.width=8, fig.height=6}
 
-hr_est_3 %>% 
+hr_est_3 %>%
   plot(which = "just_data")
+```
+
+## Built-in Themes and Color Palettes
+
+besthr includes built-in themes and colorblind-safe color palettes that can be applied directly through the `plot()` function.
+
+### Theme Options
+
+Use the `theme` parameter to change the overall visual style:
+
+- `"classic"` (default) - The original besthr appearance
+- `"modern"` - A cleaner, contemporary style with refined typography and grid
+
+```{r, fig.width=8, fig.height=6}
+# Classic theme (default - same as before)
+plot(hr_est_1, theme = "classic")
+
+# Modern theme
+plot(hr_est_1, theme = "modern")
+```
+
+### Color Palette Options
+
+Use the `colors` parameter to change the color palette:
+
+- `"default"` - Original besthr colors
+- `"okabe_ito"` - Colorblind-safe Okabe-Ito palette
+- `"viridis"` - Viridis color scale
+
+```{r, fig.width=8, fig.height=6}
+# Colorblind-safe palette
+plot(hr_est_1, colors = "okabe_ito")
+
+# Viridis palette
+plot(hr_est_1, colors = "viridis")
+```
+
+### Combining Theme and Colors
+
+You can combine both options for a fully customized look:
+
+```{r, fig.width=8, fig.height=6}
+# Modern theme with colorblind-safe colors
+plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+### Using besthr Palettes Directly
+
+The color palettes can also be used directly in your own ggplot2 code:
+```{r}
+# Get palette colors
+besthr_palette("okabe_ito", n = 4)
+
+# Available palettes
+besthr_palette("default", n = 3)
+besthr_palette("viridis", n = 3)
 ```
 
 ## Styling Plots
