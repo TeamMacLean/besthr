@@ -12,12 +12,14 @@ Imports:
     dplyr,
     ggplot2,
     ggridges,
+    grDevices,
     magrittr,
     patchwork,
     rlang,
     stringr,
-    tibble
-RoxygenNote: 7.1.2
+    tibble,
+    viridisLite
+RoxygenNote: 7.3.3
 Suggests:
     knitr,
     rmarkdown,

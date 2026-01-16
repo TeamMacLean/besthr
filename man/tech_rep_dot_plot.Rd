@@ -4,7 +4,14 @@
 \alias{tech_rep_dot_plot}
 \title{dot plot of score data with technical replicates}
 \usage{
-tech_rep_dot_plot(hrest, score_col, group_col, tech_rep_col)
+tech_rep_dot_plot(
+  hrest,
+  score_col,
+  group_col,
+  tech_rep_col,
+  theme_style = "classic",
+  color_palette = "default"
+)
 }
 \arguments{
 \item{hrest}{the hrest object from \code{estimate}}
@@ -14,6 +21,10 @@ tech_rep_dot_plot(hrest, score_col, group_col, tech_rep_col)
 \item{group_col}{quoted group column name}
 
 \item{tech_rep_col}{quoted tech replicate column name}
+
+\item{theme_style}{character specifying the theme style}
+
+\item{color_palette}{character specifying the color palette}
 }
 \description{
 \code{tech_rep_dot_plot} returns a ggplot object of score data with group on

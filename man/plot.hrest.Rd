@@ -4,7 +4,7 @@
 \alias{plot.hrest}
 \title{plots the \code{hrest} object}
 \usage{
-\method{plot}{hrest}(x, ..., which = "rank_simulation")
+\method{plot}{hrest}(x, ..., which = "rank_simulation", theme = "classic", colors = "default")
 }
 \arguments{
 \item{x}{the \code{hrest} object from \code{\link{estimate}}}
@@ -13,6 +13,12 @@
 
 \item{which}{the type of left hand panel to create. Either "rank_simulation"
 or "just_data"}
+
+\item{theme}{the visual theme to use. Either "classic" (default, matches
+original besthr appearance) or "modern" (cleaner, contemporary style)}
+
+\item{colors}{the color palette to use. Either "default" (original colors),
+"okabe_ito" (colorblind-safe), or "viridis"}
 }
 \value{
 ggplot object
@@ -33,5 +39,8 @@ control groups.
  d1 <- make_data()
  hr_est <- estimate(d1, score, group)
  plot(hr_est)
+
+ # Use modern theme with colorblind-safe palette
+ plot(hr_est, theme = "modern", colors = "okabe_ito")
 
 }

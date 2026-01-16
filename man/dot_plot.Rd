@@ -4,12 +4,16 @@
 \alias{dot_plot}
 \title{dot plot of ranked data without technical replicates}
 \usage{
-dot_plot(hrest, group_col)
+dot_plot(hrest, group_col, theme_style = "classic", color_palette = "default")
 }
 \arguments{
 \item{hrest}{the hrest object from \code{estimate}}
 
 \item{group_col}{quoted group column name}
+
+\item{theme_style}{character specifying the theme style}
+
+\item{color_palette}{character specifying the color palette}
 }
 \description{
 \code{dot_plot} returns a ggplot object of ranked data with group on the

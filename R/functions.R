@@ -371,20 +371,31 @@ print.hrest <- function(x, ...){
 #'
 #' @param hrest the hrest object from \code{estimate}
 #' @param group_col quoted group column name
+#' @param theme_style character specifying the theme style
+#' @param color_palette character specifying the color palette
 #' @keywords internal
 #' importFrom rlang .data
-dot_plot <- function(hrest, group_col){
-  hrest$ranked_data %>%
+dot_plot <- function(hrest, group_col, theme_style = "classic",
+                     color_palette = "default") {
+  p <- hrest$ranked_data %>%
     dplyr::group_by(!!group_col, rank) %>%
-    dplyr::summarise(count = dplyr::n() ) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     ggplot2::ggplot() +
     ggplot2::aes(!!group_col, rank) +
     ggplot2::geom_point(ggplot2::aes(size = .data$count, colour = !!group_col,
                                      fill = !!group_col)) +
     ggplot2::geom_hline(ggplot2::aes(yintercept = mean, colour = !!group_col),
-                        data = hrest$group_means, linetype = 3, size = 1) +
-    ggplot2::theme_minimal()
+                        data = hrest$group_means, linetype = 3, linewidth = 1)
 
+  # Apply theme
+  p <- p + theme_besthr(theme_style)
+
+ # Apply color palette if not default (to preserve backward compatibility)
+  if (color_palette != "default") {
+    p <- p + scale_color_besthr(color_palette) + scale_fill_besthr(color_palette)
+  }
+
+  p
 }
 
 #' dot plot of score data with technical replicates
@@ -397,15 +408,18 @@ dot_plot <- function(hrest, group_col){
 #' @param score_col quoted score column name
 #' @param group_col quoted group column name
 #' @param tech_rep_col quoted tech replicate column name
+#' @param theme_style character specifying the theme style
+#' @param color_palette character specifying the color palette
 #' @keywords internal
 #' ImportFrom rlang .data
-tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
+tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col,
+                              theme_style = "classic", color_palette = "default") {
 
-  hrest$original_data %>% factorise_cols( list(group_col, tech_rep_col)) %>%
+  p <- hrest$original_data %>% factorise_cols(list(group_col, tech_rep_col)) %>%
     dplyr::group_by(!!group_col, !!tech_rep_col, !!score_col) %>%
-    dplyr::summarise(count = dplyr::n() ) %>%
+    dplyr::summarise(count = dplyr::n()) %>%
     ggplot2::ggplot() +
-    ggplot2::aes( !!tech_rep_col, !!score_col )  +
+    ggplot2::aes(!!tech_rep_col, !!score_col) +
     ggplot2::geom_point(
       ggplot2::aes(
         size = .data$count,
@@ -413,11 +427,19 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
         fill = !!group_col
       )
     ) +
-    ggplot2::theme_minimal() +
-    ggplot2::facet_wrap( ggplot2::vars(!!group_col), strip.position = "bottom", nrow = 1) +
+    ggplot2::facet_wrap(ggplot2::vars(!!group_col), strip.position = "bottom", nrow = 1)
+
+  # Apply theme
+  p <- p + theme_besthr(theme_style) +
     ggplot2::theme(strip.background = ggplot2::element_blank(),
                    strip.placement = "outside")
 
+  # Apply color palette if not default (to preserve backward compatibility)
+  if (color_palette != "default") {
+    p <- p + scale_color_besthr(color_palette) + scale_fill_besthr(color_palette)
+  }
+
+  p
 }
 
 #' plots the \code{hrest} object
@@ -435,6 +457,10 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #' @param x the \code{hrest} object from \code{\link{estimate}}
 #' @param which the type of left hand panel to create. Either "rank_simulation"
 #'  or "just_data"
+#' @param theme the visual theme to use. Either "classic" (default, matches
+#'  original besthr appearance) or "modern" (cleaner, contemporary style)
+#' @param colors the color palette to use. Either "default" (original colors),
+#'  "okabe_ito" (colorblind-safe), or "viridis"
 #' @param ... Other parameters
 #' @examples
 #'
@@ -442,50 +468,57 @@ tech_rep_dot_plot <- function(hrest, score_col, group_col, tech_rep_col){
 #'  hr_est <- estimate(d1, score, group)
 #'  plot(hr_est)
 #'
+#'  # Use modern theme with colorblind-safe palette
+#'  plot(hr_est, theme = "modern", colors = "okabe_ito")
+#'
 #' @export
 #' @return ggplot object
 #' @importFrom stats quantile
 #' @importFrom ggplot2 after_stat
-plot.hrest <- function(x, ...,  which = "rank_simulation"){
+plot.hrest <- function(x, ..., which = "rank_simulation",
+                       theme = "classic", colors = "default") {
   hrest <- x
-  group_col <- names(hrest$group_n)[ names(hrest$group_n) != "n" ][[1]]
+  group_col <- names(hrest$group_n)[names(hrest$group_n) != "n"][[1]]
   group_col <- rlang::sym(group_col)
 
   a <- NULL
-  if (length(hrest$column_info) == 3 && which == "just_data" ){
+  if (length(hrest$column_info) == 3 && which == "just_data") {
     quo_score_col <- hrest$column_info[[1]]
     quo_group_col <- hrest$column_info[[2]]
     quo_tech_rep_col <- hrest$column_info[[3]]
 
     a <- tech_rep_dot_plot(hrest, quo_score_col, quo_group_col,
-                           quo_tech_rep_col)
-
-  }
-  else {
+                           quo_tech_rep_col, theme_style = theme,
+                           color_palette = colors)
+  } else {
     quo_group_col <- hrest$column_info[[2]]
-    a <- dot_plot(hrest, quo_group_col)
+    a <- dot_plot(hrest, quo_group_col, theme_style = theme,
+                  color_palette = colors)
   }
 
-
-
+  # Get CI fill colors based on theme
+  ci_colors <- ci_fill_colors(if (theme == "modern") "modern" else "default")
 
   b <- hrest$bootstraps %>%
     ggplot2::ggplot() + ggplot2::aes(mean, !!group_col,
                                      fill = factor(after_stat(quantile))) +
     ggplot2::xlim(min(hrest$ranked_data$rank), max(hrest$ranked_data$rank)) +
     ggridges::stat_density_ridges(geom = "density_ridges_gradient",
-                                 calc_ecdf = TRUE,
-                                 quantiles = c(hrest$low, hrest$high) ) +
-    ggplot2::scale_fill_manual(values =
-                                 c("#0000FFA0",  "#A0A0A0A0", "#FF0000A0"),
-                               name = "percentile", labels=c(paste0("<", hrest$low), paste0(hrest$low, "-", hrest$high), paste0(">", hrest$high)),
-                               guide = ggplot2::guide_legend(reverse=TRUE) ) +
-    ggplot2::coord_flip() + ggplot2::theme_minimal()
+                                  calc_ecdf = TRUE,
+                                  quantiles = c(hrest$low, hrest$high)) +
+    ggplot2::scale_fill_manual(
+      values = ci_colors,
+      name = "percentile",
+      labels = c(paste0("<", hrest$low),
+                 paste0(hrest$low, "-", hrest$high),
+                 paste0(">", hrest$high)),
+      guide = ggplot2::guide_legend(reverse = TRUE)
+    ) +
+    ggplot2::coord_flip() + theme_besthr(theme)
 
-   p <- patchwork::wrap_plots(a,b) + patchwork::guide_area() +
-                                   patchwork::plot_layout( guides="collect") +
-                                   ggplot2::theme(legend.position = "bottom")
+  p <- patchwork::wrap_plots(a, b) + patchwork::guide_area() +
+    patchwork::plot_layout(guides = "collect") +
+    ggplot2::theme(legend.position = "bottom")
 
   return(p)
-
 }
