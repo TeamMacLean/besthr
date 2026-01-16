@@ -318,20 +318,26 @@ derive_ci_colors("viridis", "classic")
 
 ## Significance and Effect Size
 
+```{r}
+# Create example data with 3 groups and realistic variation
+set.seed(42)
+d_effect <- data.frame(
+  score = c(
+    sample(1:4, 12, replace = TRUE),   # Group A: low scores (control)
+    sample(4:8, 12, replace = TRUE),   # Group B: medium-high scores
+    sample(6:10, 12, replace = TRUE)   # Group C: high scores
+  ),
+  group = rep(c("A", "B", "C"), each = 12)
+)
+hr_effect <- estimate(d_effect, score, group, control = "A", nits = 1000)
+```
+
 ### Significance Annotations
 
 Add significance stars to groups where the bootstrap confidence interval does not overlap the control mean:
 
 ```{r, fig.width=8, fig.height=6}
-# Create data with a clear difference for demonstration
-d_sig <- data.frame(
-  score = c(rep(2, 10), rep(8, 10)),
-  group = rep(c("A", "B"), each = 10)
-)
-hr_sig <- estimate(d_sig, score, group, control = "A", nits = 500)
-
-# Plot with significance annotation
-plot(hr_sig, show_significance = TRUE)
+plot(hr_effect, show_significance = TRUE)
 ```
 
 ### Effect Size Annotation
@@ -339,7 +345,7 @@ plot(hr_sig, show_significance = TRUE)
 Display effect size (difference from control) with confidence intervals:
 
 ```{r, fig.width=8, fig.height=6}
-plot(hr_sig, show_effect_size = TRUE)
+plot(hr_effect, show_effect_size = TRUE)
 ```
 
 ### Computing Statistics Directly
@@ -348,10 +354,10 @@ You can access the significance and effect size calculations directly:
 
 ```{r}
 # Compute significance
-compute_significance(hr_est_1)
+compute_significance(hr_effect)
 
 # Compute effect sizes
-compute_effect_size(hr_est_1)
+compute_effect_size(hr_effect)
 ```
 
 ## Summary Tables
@@ -360,10 +366,10 @@ Generate publication-ready summary tables with `besthr_table()`:
 
 ```{r}
 # Default tibble format
-besthr_table(hr_est_1)
+besthr_table(hr_effect)
 
 # With significance stars
-besthr_table(hr_sig, include_significance = TRUE)
+besthr_table(hr_effect, include_significance = TRUE)
 
 # Markdown format
 besthr_table(hr_est_1, format = "markdown")

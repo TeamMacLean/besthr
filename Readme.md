@@ -86,7 +86,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.3375, 8.6
+    ##  3.995, 8.37625
     ## 
     ## 100 bootstrap resamples.
 
@@ -174,12 +174,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.15833333333333, 2.84166666666666
+    ##  1.33333333333333, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7.33333333333333, 9
+    ##  7, 8.66666666666667
     ## 
     ## 100 bootstrap resamples.
 
@@ -374,38 +374,44 @@ plot_raincloud(hr_est_1)
 You can add statistical annotations to your plots to highlight
 significant results.
 
+``` r
+# Create example data with 3 groups and realistic variation
+set.seed(42)
+d_effect <- data.frame(
+  score = c(
+    sample(1:4, 12, replace = TRUE),   # Group A: low scores (control)
+    sample(4:8, 12, replace = TRUE),   # Group B: medium-high scores
+    sample(6:10, 12, replace = TRUE)   # Group C: high scores
+  ),
+  group = rep(c("A", "B", "C"), each = 12)
+)
+hr_effect <- estimate(d_effect, score, group, control = "A", nits = 1000)
+```
+
 ### Significance Stars
 
 Add significance stars to groups where the bootstrap confidence interval
 does not overlap the control mean:
 
 ``` r
-# Create data with a clear difference for demonstration
-d_sig <- data.frame(
-  score = c(rep(2, 10), rep(8, 10)),
-  group = rep(c("A", "B"), each = 10)
-)
-hr_sig <- estimate(d_sig, score, group, control = "A", nits = 500)
-
-# Plot with significance annotation
-plot(hr_sig, show_significance = TRUE)
+plot(hr_effect, show_significance = TRUE)
 ```
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ### Effect Size Annotation
 
 Display effect size (difference from control) with confidence intervals:
 
 ``` r
-plot(hr_sig, show_effect_size = TRUE)
+plot(hr_effect, show_effect_size = TRUE)
 ```
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 ### Computing Statistics Directly
 
@@ -428,7 +434,7 @@ compute_effect_size(hr_est_1)
 
     ##   group effect effect_ci_low effect_ci_high
     ## 1     A     NA            NA             NA
-    ## 2     B   -8.8      -10.5625           -6.3
+    ## 2     B   -8.8       -10.905       -6.52375
 
 ## Summary Tables
 
@@ -436,25 +442,27 @@ Generate publication-ready summary tables with `besthr_table()`:
 
 ``` r
 # Default tibble format
-besthr_table(hr_est_1)
+besthr_table(hr_effect)
 ```
 
-    ## # A tibble: 2 × 6
+    ## # A tibble: 3 × 6
     ##   group     n mean_rank ci_low ci_high effect_size
     ##   <chr> <int>     <dbl>  <dbl>   <dbl>       <dbl>
-    ## 1 A        10      14.9  NA       NA          NA  
-    ## 2 B        10       6.1   4.34     8.6        -8.8
+    ## 1 A        12      6.88   NA      NA          NA  
+    ## 2 B        12     20.0    16.7    23.2        13.1
+    ## 3 C        12     28.7    25.7    31.7        21.8
 
 ``` r
 # With significance stars
-besthr_table(hr_sig, include_significance = TRUE)
+besthr_table(hr_effect, include_significance = TRUE)
 ```
 
-    ## # A tibble: 2 × 7
+    ## # A tibble: 3 × 7
     ##   group     n mean_rank ci_low ci_high effect_size significance
     ##   <chr> <int>     <dbl>  <dbl>   <dbl>       <dbl> <chr>       
-    ## 1 A        10       5.5   NA      NA            NA ""          
-    ## 2 B        10      15.5   15.5    15.5          10 "***"
+    ## 1 A        12      6.88   NA      NA          NA   ""          
+    ## 2 B        12     20.0    16.7    23.2        13.1 "***"       
+    ## 3 C        12     28.7    25.7    31.7        21.8 "***"
 
 ### Export Formats
 
@@ -465,7 +473,7 @@ Generate tables in various formats for publication:
 besthr_table(hr_est_1, format = "markdown")
 ```
 
-    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 4.34 | 8.6 | -8.8 |"
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.99 | 8.38 | -8.8 |"
 
 ``` r
 # HTML format
