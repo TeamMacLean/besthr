@@ -86,7 +86,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.36875, 8.27875
+    ##  3.5375, 8.17625
     ## 
     ## 100 bootstrap resamples.
 
@@ -94,7 +94,7 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
@@ -108,7 +108,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.334
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
@@ -121,7 +121,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.261
+    ## Confidence interval: 40.0% - 60.0%
 
 ![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
@@ -174,12 +174,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1, 3
+    ##  1.15833333333333, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7, 9
+    ##  7.33333333333333, 9
     ## 
     ## 100 bootstrap resamples.
 
@@ -187,7 +187,7 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.171
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
@@ -203,7 +203,7 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.171
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
@@ -225,7 +225,7 @@ Use the `theme` parameter to change the overall visual style:
 plot(hr_est_1, theme = "classic")
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
@@ -234,7 +234,7 @@ plot(hr_est_1, theme = "classic")
 plot(hr_est_1, theme = "modern")
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
@@ -251,7 +251,7 @@ Use the `colors` parameter to change the color palette:
 plot(hr_est_1, colors = "okabe_ito")
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
@@ -260,7 +260,7 @@ plot(hr_est_1, colors = "okabe_ito")
 plot(hr_est_1, colors = "viridis")
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
@@ -273,7 +273,7 @@ You can combine both options for a fully customized look:
 plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Confidence interval: 2.5% - 97.5%
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
@@ -318,21 +318,21 @@ You can use the `patchwork` `plot_annotation()` function to add titles
 library(patchwork)
 
 p <- plot(hr_est_1)
+```
 
+    ## Confidence interval: 2.5% - 97.5%
+
+``` r
 p + plot_annotation(title = 'A stylish besthr plot', 
                     subtitle = "better than ever", 
                     caption = 'Though this example is not meaningful')
 ```
-
-    ## Picking joint bandwidth of 0.378
 
 ![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 p
 ```
-
-    ## Picking joint bandwidth of 0.378
 
 ![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
 
@@ -357,8 +357,6 @@ p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="b
 p
 ```
 
-    ## Picking joint bandwidth of 0.378
-
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ### Changing the scale colours of a subplot
@@ -373,10 +371,14 @@ For the dot plot, use a discrete scale e.g `scale_colour_manual()`,
 
 ``` r
 p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
-p
 ```
 
-    ## Picking joint bandwidth of 0.378
+    ## Scale for colour is already present.
+    ## Adding another scale for colour, which will replace the existing scale.
+
+``` r
+p
+```
 
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
@@ -391,8 +393,6 @@ p[[1]] <- p[[1]] + scale_colour_viridis_d()
 p
 ```
 
-    ## Picking joint bandwidth of 0.378
-
 ![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
 
 ``` r
@@ -406,8 +406,6 @@ p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
 p
 ```
 
-    ## Picking joint bandwidth of 0.378
-
 ![](README_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
 
 For the percentile plot, use only `scale_colour_manual()` with specified
@@ -420,15 +418,172 @@ p[[2]] <- p[[2]] + scale_fill_manual(
   name = "bootstrap percentile", labels=c("lower", "non-significant", "higher"),
   guide = guide_legend(reverse=TRUE)
   )
-```
-
-    ## Scale for fill is already present.
-    ## Adding another scale for fill, which will replace the existing scale.
-
-``` r
 p
 ```
 
-    ## Picking joint bandwidth of 0.378
-
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+## Alternative Visualizations
+
+### Forest Plot
+
+For publication-style forest plots showing point estimates with
+confidence intervals:
+
+``` r
+# Basic forest plot
+plot_forest(hr_est_1)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+``` r
+# With theme options
+plot_forest(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+![](README_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
+
+### Raincloud Plot
+
+For a combined view of raw data, density, and summary statistics:
+
+``` r
+plot_raincloud(hr_est_1)
+```
+
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
+## Significance and Effect Size Annotations
+
+You can add statistical annotations to your plots to highlight
+significant results.
+
+### Significance Stars
+
+Add significance stars to groups where the bootstrap confidence interval
+does not overlap the control mean:
+
+``` r
+# Create data with a clear difference for demonstration
+d_sig <- data.frame(
+  score = c(rep(2, 10), rep(8, 10)),
+  group = rep(c("A", "B"), each = 10)
+)
+hr_sig <- estimate(d_sig, score, group, control = "A", nits = 500)
+
+# Plot with significance annotation
+plot(hr_sig, show_significance = TRUE)
+```
+
+    ## Confidence interval: 2.5% - 97.5%
+
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+### Effect Size Annotation
+
+Display effect size (difference from control) with confidence intervals:
+
+``` r
+plot(hr_sig, show_effect_size = TRUE)
+```
+
+    ## Confidence interval: 2.5% - 97.5%
+
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+### Computing Statistics Directly
+
+You can also access the significance and effect size calculations
+directly:
+
+``` r
+# Compute significance
+compute_significance(hr_est_1)
+```
+
+    ##   group significant p_value stars
+    ## 1     A          NA      NA      
+    ## 2     B        TRUE       0   ***
+
+``` r
+# Compute effect sizes
+compute_effect_size(hr_est_1)
+```
+
+    ##   group effect effect_ci_low effect_ci_high
+    ## 1     A     NA            NA             NA
+    ## 2     B   -8.8      -11.3625       -6.72375
+
+## Summary Tables
+
+Generate publication-ready summary tables with `besthr_table()`:
+
+``` r
+# Default tibble format
+besthr_table(hr_est_1)
+```
+
+    ## # A tibble: 2 × 6
+    ##   group     n mean_rank ci_low ci_high effect_size
+    ##   <chr> <int>     <dbl>  <dbl>   <dbl>       <dbl>
+    ## 1 A        10      14.9  NA      NA           NA  
+    ## 2 B        10       6.1   3.54    8.18        -8.8
+
+``` r
+# With significance stars
+besthr_table(hr_sig, include_significance = TRUE)
+```
+
+    ## # A tibble: 2 × 7
+    ##   group     n mean_rank ci_low ci_high effect_size significance
+    ##   <chr> <int>     <dbl>  <dbl>   <dbl>       <dbl> <chr>       
+    ## 1 A        10       5.5   NA      NA            NA ""          
+    ## 2 B        10      15.5   15.5    15.5          10 "***"
+
+### Export Formats
+
+Generate tables in various formats for publication:
+
+``` r
+# Markdown format
+besthr_table(hr_est_1, format = "markdown")
+```
+
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.54 | 8.18 | -8.8 |"
+
+``` r
+# HTML format
+besthr_table(hr_est_1, format = "html")
+
+# LaTeX format
+besthr_table(hr_est_1, format = "latex")
+```
+
+## Publication Export
+
+Save your plots directly to publication-quality files:
+
+``` r
+# Save to PNG (default 300 DPI)
+save_besthr(hr_est_1, "figure1.png")
+
+# Save to PDF
+save_besthr(hr_est_1, "figure1.pdf", width = 10, height = 8)
+
+# Save forest plot
+save_besthr(hr_est_1, "forest.png", type = "forest")
+
+# Save raincloud plot
+save_besthr(hr_est_1, "raincloud.png", type = "raincloud")
+
+# With custom options
+save_besthr(hr_est_1, "figure1.png",
+            theme = "modern",
+            colors = "okabe_ito",
+            width = 10,
+            height = 6,
+            dpi = 600)
+```
+
+Supported formats: PNG, PDF, SVG, TIFF, JPEG

@@ -220,4 +220,122 @@ p[[2]] <- p[[2]] + scale_fill_manual(
 p
 ```
 
+## Alternative Visualizations
+
+### Forest Plot
+
+For publication-style forest plots showing point estimates with confidence intervals:
+
+```{r, fig.width=8, fig.height=4}
+# Basic forest plot
+plot_forest(hr_est_1)
+
+# With theme options
+plot_forest(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+### Raincloud Plot
+
+For a combined view of raw data, density, and summary statistics:
+
+```{r, fig.width=8, fig.height=6}
+plot_raincloud(hr_est_1)
+```
+
+## Significance and Effect Size Annotations
+
+You can add statistical annotations to your plots to highlight significant results.
+
+### Significance Stars
+
+Add significance stars to groups where the bootstrap confidence interval does not overlap the control mean:
+
+```{r, fig.width=8, fig.height=6}
+# Create data with a clear difference for demonstration
+d_sig <- data.frame(
+  score = c(rep(2, 10), rep(8, 10)),
+  group = rep(c("A", "B"), each = 10)
+)
+hr_sig <- estimate(d_sig, score, group, control = "A", nits = 500)
+
+# Plot with significance annotation
+plot(hr_sig, show_significance = TRUE)
+```
+
+### Effect Size Annotation
+
+Display effect size (difference from control) with confidence intervals:
+
+```{r, fig.width=8, fig.height=6}
+plot(hr_sig, show_effect_size = TRUE)
+```
+
+### Computing Statistics Directly
+
+You can also access the significance and effect size calculations directly:
+
+```{r}
+# Compute significance
+compute_significance(hr_est_1)
+
+# Compute effect sizes
+compute_effect_size(hr_est_1)
+```
+
+## Summary Tables
+
+Generate publication-ready summary tables with `besthr_table()`:
+
+```{r}
+# Default tibble format
+besthr_table(hr_est_1)
+
+# With significance stars
+besthr_table(hr_sig, include_significance = TRUE)
+```
+
+### Export Formats
+
+Generate tables in various formats for publication:
+
+```{r}
+# Markdown format
+besthr_table(hr_est_1, format = "markdown")
+```
+
+```{r, eval=FALSE}
+# HTML format
+besthr_table(hr_est_1, format = "html")
+
+# LaTeX format
+besthr_table(hr_est_1, format = "latex")
+```
+
+## Publication Export
+
+Save your plots directly to publication-quality files:
+
+```{r, eval=FALSE}
+# Save to PNG (default 300 DPI)
+save_besthr(hr_est_1, "figure1.png")
+
+# Save to PDF
+save_besthr(hr_est_1, "figure1.pdf", width = 10, height = 8)
+
+# Save forest plot
+save_besthr(hr_est_1, "forest.png", type = "forest")
+
+# Save raincloud plot
+save_besthr(hr_est_1, "raincloud.png", type = "raincloud")
+
+# With custom options
+save_besthr(hr_est_1, "figure1.png",
+            theme = "modern",
+            colors = "okabe_ito",
+            width = 10,
+            height = 6,
+            dpi = 600)
+```
+
+Supported formats: PNG, PDF, SVG, TIFF, JPEG
 
