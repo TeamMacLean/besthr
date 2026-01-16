@@ -18,8 +18,10 @@ Imports:
     stringr,
     tibble
 RoxygenNote: 7.1.2
-Suggests: 
+Suggests:
     knitr,
     rmarkdown,
-    readr
+    readr,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 VignetteBuilder: knitr
