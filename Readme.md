@@ -86,7 +86,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.5375, 8.17625
+    ##  4.3375, 8.6
     ## 
     ## 100 bootstrap resamples.
 
@@ -174,7 +174,7 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.15833333333333, 3
+    ##  1.15833333333333, 2.84166666666666
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
@@ -299,20 +299,46 @@ besthr_palette("default", n = 3)
 besthr_palette("viridis", n = 3)
 ```
 
-    ## [1] "#440154FF" "#46337EFF" "#365C8DFF"
+    ## [1] "#482576FF" "#21908CFF" "#BBDF27FF"
 
 ## Styling Plots
 
-You can style plots to your own taste. The object returned from `plot()`
-is a `patchwork` <https://patchwork.data-imaginist.com/> object that
-composes two separate plots, the dot plot and the bootstrap percentile
-plot, which are themselves `ggplot` objects. So you can use a mixture of
-`patchwork` annotations functions for whole plot labels and `ggplot`
-themes for individual elements.
+### Recommended: Use Built-in Themes and Colors
 
-### Adding annotations.
+The easiest way to style your plots is using the `theme` and `colors`
+parameters:
 
-You can use the `patchwork` `plot_annotation()` function to add titles
+``` r
+# Modern look with colorblind-safe colors (this is the default)
+plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+    ## Confidence interval: 2.5% - 97.5%
+
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+
+``` r
+# Classic appearance
+plot(hr_est_1, theme = "classic", colors = "default")
+```
+
+    ## Confidence interval: 2.5% - 97.5%
+
+![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+
+``` r
+# Viridis color scheme
+plot(hr_est_1, colors = "viridis")
+```
+
+    ## Confidence interval: 2.5% - 97.5%
+
+![](README_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
+
+### Adding Titles and Annotations
+
+The plot object is a `patchwork` composition. You can add titles using
+`plot_annotation()`:
 
 ``` r
 library(patchwork)
@@ -323,136 +349,25 @@ p <- plot(hr_est_1)
     ## Confidence interval: 2.5% - 97.5%
 
 ``` r
-p + plot_annotation(title = 'A stylish besthr plot', 
-                    subtitle = "better than ever", 
-                    caption = 'Though this example is not meaningful')
-```
-
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
-
-``` r
-p
-```
-
-![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
-
-### Targetting a subplot to make theme changes
-
-You can change the style of the individual plot elements using
-subsetting syntax `[[]]` . The dot plot can be addressed within the
-`patchwork` object using index 1 within the `patchwork` object `p[[1]]`,
-and the percentile plot using `p[[2]]`. You must add to the existing
-subplot then assign the result back to see the difference in the plot.
-Here’s an example that uses `theme()` to restyle the y-axis text of the
-dot plot
-
-``` r
-library(ggplot2)
-```
-
-    ## Warning: package 'ggplot2' was built under R version 4.5.2
-
-``` r
-p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="blue", size=24))
-p
+p + plot_annotation(
+  title = 'HR Score Analysis',
+  subtitle = "Control vs Treatment",
+  caption = 'Generated with besthr'
+)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
-### Changing the scale colours of a subplot
+## Raincloud Plot
 
-You can change the colours used by the scales in the same way using the
-`scale` functions, though as the type of scale is different for the dot
-plot and bootstrap plot you will need to apply a different scale for
-each.
-
-For the dot plot, use a discrete scale e.g `scale_colour_manual()`,
-`scale_colour_viridis_d()` or `scale_colour_brewer(type = "qual")`
-
-``` r
-p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
-```
-
-    ## Scale for colour is already present.
-    ## Adding another scale for colour, which will replace the existing scale.
-
-``` r
-p
-```
-
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
-
-``` r
-p[[1]] <- p[[1]] + scale_colour_viridis_d()
-```
-
-    ## Scale for colour is already present.
-    ## Adding another scale for colour, which will replace the existing scale.
-
-``` r
-p
-```
-
-![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
-
-``` r
-p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
-```
-
-    ## Scale for colour is already present.
-    ## Adding another scale for colour, which will replace the existing scale.
-
-``` r
-p
-```
-
-![](README_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
-
-For the percentile plot, use only `scale_colour_manual()` with specified
-colours. Annoyingly, this rewrites the other values associated with the
-scale each time, so you’ll need to replace those.
-
-``` r
-p[[2]] <- p[[2]] + scale_fill_manual(
-  values = c("blue", "pink", "yellow"),
-  name = "bootstrap percentile", labels=c("lower", "non-significant", "higher"),
-  guide = guide_legend(reverse=TRUE)
-  )
-p
-```
-
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
-
-## Alternative Visualizations
-
-### Forest Plot
-
-For publication-style forest plots showing point estimates with
-confidence intervals:
-
-``` r
-# Basic forest plot
-plot_forest(hr_est_1)
-```
-
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
-``` r
-# With theme options
-plot_forest(hr_est_1, theme = "modern", colors = "okabe_ito")
-```
-
-![](README_files/figure-gfm/unnamed-chunk-15-2.png)<!-- -->
-
-### Raincloud Plot
-
-For a combined view of raw data, density, and summary statistics:
+For a combined view of raw data points with summary statistics, use
+`plot_raincloud()`:
 
 ``` r
 plot_raincloud(hr_est_1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ## Significance and Effect Size Annotations
 
@@ -478,7 +393,7 @@ plot(hr_sig, show_significance = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ### Effect Size Annotation
 
@@ -490,7 +405,7 @@ plot(hr_sig, show_effect_size = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 ### Computing Statistics Directly
 
@@ -513,7 +428,7 @@ compute_effect_size(hr_est_1)
 
     ##   group effect effect_ci_low effect_ci_high
     ## 1     A     NA            NA             NA
-    ## 2     B   -8.8      -11.3625       -6.72375
+    ## 2     B   -8.8      -10.5625           -6.3
 
 ## Summary Tables
 
@@ -527,8 +442,8 @@ besthr_table(hr_est_1)
     ## # A tibble: 2 × 6
     ##   group     n mean_rank ci_low ci_high effect_size
     ##   <chr> <int>     <dbl>  <dbl>   <dbl>       <dbl>
-    ## 1 A        10      14.9  NA      NA           NA  
-    ## 2 B        10       6.1   3.54    8.18        -8.8
+    ## 1 A        10      14.9  NA       NA          NA  
+    ## 2 B        10       6.1   4.34     8.6        -8.8
 
 ``` r
 # With significance stars
@@ -550,7 +465,7 @@ Generate tables in various formats for publication:
 besthr_table(hr_est_1, format = "markdown")
 ```
 
-    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.54 | 8.18 | -8.8 |"
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 4.34 | 8.6 | -8.8 |"
 
 ``` r
 # HTML format
@@ -570,9 +485,6 @@ save_besthr(hr_est_1, "figure1.png")
 
 # Save to PDF
 save_besthr(hr_est_1, "figure1.pdf", width = 10, height = 8)
-
-# Save forest plot
-save_besthr(hr_est_1, "forest.png", type = "forest")
 
 # Save raincloud plot
 save_besthr(hr_est_1, "raincloud.png", type = "raincloud")

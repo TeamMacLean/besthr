@@ -19,6 +19,13 @@
 #' besthr_palette("okabe_ito", 3)
 #'
 besthr_palette <- function(palette = "default", n = NULL) {
+  # For viridis, generate colors spread across the full range
+  if (palette == "viridis") {
+    if (is.null(n)) n <- 8
+    # Use option "D" (viridis) and spread colors evenly across the range
+    return(viridisLite::viridis(n, begin = 0.1, end = 0.9))
+  }
+
   palettes <- list(
     default = c(
       "#F8766D", "#00BA38", "#619CFF", "#F564E3",
@@ -27,14 +34,13 @@ besthr_palette <- function(palette = "default", n = NULL) {
     okabe_ito = c(
       "#E69F00", "#56B4E9", "#009E73", "#F0E442",
       "#0072B2", "#D55E00", "#CC79A7", "#999999"
-    ),
-    viridis = viridisLite::viridis(8)
+    )
   )
 
   pal <- palettes[[palette]]
   if (is.null(pal)) {
     stop("Unknown palette: ", palette,
-         ". Choose from: ", paste(names(palettes), collapse = ", "))
+         ". Choose from: ", paste(names(palettes), collapse = ", "), ", viridis")
   }
 
   if (!is.null(n)) {

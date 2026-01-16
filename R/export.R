@@ -5,7 +5,7 @@
 #'
 #' @param hrest An hrest object from \code{\link{estimate}}
 #' @param filename Output filename. Format is detected from extension.
-#' @param type Plot type: "default" (two-panel), "forest", or "raincloud"
+#' @param type Plot type: "default" (two-panel) or "raincloud"
 #' @param width Plot width in inches (default 8)
 #' @param height Plot height in inches (default 6)
 #' @param dpi Resolution in dots per inch (default 300)
@@ -21,7 +21,7 @@
 #' hr <- estimate(d, score, group)
 #' save_besthr(hr, "figure1.png")
 #' save_besthr(hr, "figure1.pdf", width = 10, height = 8)
-#' save_besthr(hr, "figure1.png", type = "forest")
+#' save_besthr(hr, "figure1.png", type = "raincloud")
 #' }
 #'
 save_besthr <- function(hrest, filename, type = "default",
@@ -41,9 +41,8 @@ save_besthr <- function(hrest, filename, type = "default",
   # Generate the plot
   p <- switch(type,
     default = plot(hrest, ...),
-    forest = plot_forest(hrest, ...),
     raincloud = plot_raincloud(hrest, ...),
-    stop("Unknown plot type: ", type)
+    stop("Unknown plot type: ", type, ". Choose 'default' or 'raincloud'.")
   )
 
   # Save using ggplot2::ggsave

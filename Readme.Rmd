@@ -161,82 +161,40 @@ besthr_palette("viridis", n = 3)
 
 ## Styling Plots
 
-You can style plots to your own taste. The object returned from `plot()` is a `patchwork` [https://patchwork.data-imaginist.com/](https://patchwork.data-imaginist.com/) object that composes two separate plots, the dot plot and the bootstrap percentile plot, which are themselves `ggplot` objects. So you can use a mixture of `patchwork` annotations functions for whole plot labels and `ggplot` themes for individual elements. 
+### Recommended: Use Built-in Themes and Colors
 
-### Adding annotations.
+The easiest way to style your plots is using the `theme` and `colors` parameters:
 
-You can use the `patchwork` `plot_annotation()` function to add titles
+```{r, fig.width=8, fig.height=6}
+# Modern look with colorblind-safe colors (this is the default)
+plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+
+# Classic appearance
+plot(hr_est_1, theme = "classic", colors = "default")
+
+# Viridis color scheme
+plot(hr_est_1, colors = "viridis")
+```
+
+### Adding Titles and Annotations
+
+The plot object is a `patchwork` composition. You can add titles using `plot_annotation()`:
 
 ```{r, fig.width=8, fig.height=6}
 library(patchwork)
 
 p <- plot(hr_est_1)
 
-p + plot_annotation(title = 'A stylish besthr plot', 
-                    subtitle = "better than ever", 
-                    caption = 'Though this example is not meaningful')
-p
-
-
+p + plot_annotation(
+  title = 'HR Score Analysis',
+  subtitle = "Control vs Treatment",
+  caption = 'Generated with besthr'
+)
 ```
 
+## Raincloud Plot
 
-### Targetting a subplot to make theme changes
-
-You can change the style of the individual plot elements using subsetting syntax `[[]]` . The dot plot can be addressed within the `patchwork` object using index 1 within the `patchwork` object `p[[1]]`, and the percentile plot using `p[[2]]`. You must add to the existing subplot then assign the result back to see the difference in the plot. Here's an example that uses `theme()` to restyle the y-axis text of the dot plot
-
-```{r, fig.width=8, fig.height=6}
-library(ggplot2)
-p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="blue", size=24))
-p
-```
-
-
-### Changing the scale colours of a subplot
-
-You can change the colours used by the scales in the same way using the `scale` functions, though as the type of scale is different for the dot plot and bootstrap plot you will need to apply a different scale for each.
-
-For the dot plot, use a discrete scale e.g `scale_colour_manual()`, `scale_colour_viridis_d()` or `scale_colour_brewer(type = "qual")`
-
-```{r, fig.width=8, fig.height=6}
-p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
-p
-
-p[[1]] <- p[[1]] + scale_colour_viridis_d()
-p
-
-p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
-p
-```
-
-For the percentile plot, use only `scale_colour_manual()` with specified colours. Annoyingly, this rewrites the other values associated with the scale each time, so you'll need to replace those.
-
-```{r, fig.width=8, fig.height=6}
-p[[2]] <- p[[2]] + scale_fill_manual(
-  values = c("blue", "pink", "yellow"),
-  name = "bootstrap percentile", labels=c("lower", "non-significant", "higher"),
-  guide = guide_legend(reverse=TRUE)
-  )
-p
-```
-
-## Alternative Visualizations
-
-### Forest Plot
-
-For publication-style forest plots showing point estimates with confidence intervals:
-
-```{r, fig.width=8, fig.height=4}
-# Basic forest plot
-plot_forest(hr_est_1)
-
-# With theme options
-plot_forest(hr_est_1, theme = "modern", colors = "okabe_ito")
-```
-
-### Raincloud Plot
-
-For a combined view of raw data, density, and summary statistics:
+For a combined view of raw data points with summary statistics, use `plot_raincloud()`:
 
 ```{r, fig.width=8, fig.height=6}
 plot_raincloud(hr_est_1)
@@ -321,9 +279,6 @@ save_besthr(hr_est_1, "figure1.png")
 
 # Save to PDF
 save_besthr(hr_est_1, "figure1.pdf", width = 10, height = 8)
-
-# Save forest plot
-save_besthr(hr_est_1, "forest.png", type = "forest")
 
 # Save raincloud plot
 save_besthr(hr_est_1, "raincloud.png", type = "raincloud")

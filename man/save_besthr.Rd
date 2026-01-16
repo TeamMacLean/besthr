@@ -19,7 +19,7 @@ save_besthr(
 
 \item{filename}{Output filename. Format is detected from extension.}
 
-\item{type}{Plot type: "default" (two-panel), "forest", or "raincloud"}
+\item{type}{Plot type: "default" (two-panel) or "raincloud"}
 
 \item{width}{Plot width in inches (default 8)}
 
@@ -42,7 +42,7 @@ d <- make_data()
 hr <- estimate(d, score, group)
 save_besthr(hr, "figure1.png")
 save_besthr(hr, "figure1.pdf", width = 10, height = 8)
-save_besthr(hr, "figure1.png", type = "forest")
+save_besthr(hr, "figure1.png", type = "raincloud")
 }
 
 }

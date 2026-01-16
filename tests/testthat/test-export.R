@@ -89,17 +89,6 @@ test_that("save_besthr uses sensible defaults", {
   unlink(tmp)
 })
 
-test_that("save_besthr can save forest plot", {
-  set.seed(444)
-  hr <- estimate(make_data(), score, group, nits = 50)
-  tmp <- tempfile(fileext = ".png")
-
-  save_besthr(hr, tmp, type = "forest")
-
-  expect_true(file.exists(tmp))
-  unlink(tmp)
-})
-
 test_that("save_besthr can save raincloud plot", {
   set.seed(555)
   hr <- estimate(make_data(), score, group, nits = 50)
