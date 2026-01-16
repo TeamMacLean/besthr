@@ -86,7 +86,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.995, 8.37625
+    ##  4.17375, 8.0575
     ## 
     ## 100 bootstrap resamples.
 
@@ -174,12 +174,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.33333333333333, 3
+    ##  1, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7, 8.66666666666667
+    ##  7.15833333333333, 9
     ## 
     ## 100 bootstrap resamples.
 
@@ -434,7 +434,7 @@ compute_effect_size(hr_est_1)
 
     ##   group effect effect_ci_low effect_ci_high
     ## 1     A     NA            NA             NA
-    ## 2     B   -8.8       -10.905       -6.52375
+    ## 2     B   -8.8     -10.72625        -6.8425
 
 ## Summary Tables
 
@@ -473,7 +473,7 @@ Generate tables in various formats for publication:
 besthr_table(hr_est_1, format = "markdown")
 ```
 
-    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.99 | 8.38 | -8.8 |"
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 4.17 | 8.06 | -8.8 |"
 
 ``` r
 # HTML format
