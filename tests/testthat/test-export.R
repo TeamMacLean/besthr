@@ -25,6 +25,8 @@ test_that("save_besthr creates PDF file", {
 })
 
 test_that("save_besthr creates SVG file", {
+  skip_if_not_installed("svglite")
+
   set.seed(789)
   hr <- estimate(make_data(), score, group, nits = 50)
   tmp <- tempfile(fileext = ".svg")

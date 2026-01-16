@@ -19,6 +19,9 @@
 #'  colorblind-safe), "default" (original colors), or "viridis"
 #' @param config an optional besthr_plot_config object for advanced customization.
 #'  If provided, theme and colors parameters are ignored.
+#' @param show_significance Logical, whether to show significance stars on groups
+#'  where CI doesn't overlap control (default FALSE)
+#' @param show_effect_size Logical, whether to show effect size annotation (default FALSE)
 #' @param ... Other parameters (ignored)
 #'
 #' @examples
@@ -43,11 +46,13 @@
 #' @importFrom ggplot2 after_stat
 plot.hrest <- function(x, ..., which = "rank_simulation",
                        theme = "modern", colors = "okabe_ito",
-                       config = NULL) {
+                       config = NULL,
+                       show_significance = FALSE,
+                       show_effect_size = FALSE) {
   hrest <- x
 
   # Build config from parameters or use provided config
- if (is.null(config)) {
+  if (is.null(config)) {
     config <- besthr_plot_config(
       theme_style = theme,
       color_palette = colors
@@ -65,6 +70,55 @@ plot.hrest <- function(x, ..., which = "rank_simulation",
   # Build panels
   p1 <- build_observation_panel(data_view, config, which)
   p2 <- build_bootstrap_panel(data_view, config)
+
+  # Add significance annotations if requested
+  if (show_significance) {
+    sig <- compute_significance(hrest)
+    sig_data <- sig[!is.na(sig$significant) & sig$stars != "", ]
+
+    if (nrow(sig_data) > 0) {
+      # Get y positions from group means for significant groups
+      group_col_name <- data_view$group_col_name
+      sig_data$y_pos <- sapply(sig_data$group, function(g) {
+        data_view$group_means$mean[data_view$group_means[[group_col_name]] == g]
+      })
+
+      p1 <- p1 + ggplot2::geom_text(
+        data = sig_data,
+        mapping = ggplot2::aes(
+          x = group,
+          y = y_pos,
+          label = stars
+        ),
+        vjust = -0.5,
+        hjust = 0.5,
+        size = 5,
+        inherit.aes = FALSE
+      )
+    }
+  }
+
+  # Add effect size annotation if requested
+  if (show_effect_size) {
+    effect <- compute_effect_size(hrest)
+    effect_data <- effect[!is.na(effect$effect), ]
+
+    if (nrow(effect_data) > 0) {
+      effect_text <- paste(
+        sapply(seq_len(nrow(effect_data)), function(i) {
+          sprintf("%s: %.2f [%.2f, %.2f]",
+                  effect_data$group[i],
+                  effect_data$effect[i],
+                  effect_data$effect_ci_low[i],
+                  effect_data$effect_ci_high[i])
+        }),
+        collapse = "\n"
+      )
+
+      # Add as subtitle via patchwork annotation
+      p2 <- p2 + ggplot2::labs(caption = paste("Effect sizes:", effect_text))
+    }
+  }
 
   # Compose with smart alignment
   compose_besthr_panels(list(p1, p2), config)

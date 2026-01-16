@@ -10,7 +10,9 @@
   which = "rank_simulation",
   theme = "modern",
   colors = "okabe_ito",
-  config = NULL
+  config = NULL,
+  show_significance = FALSE,
+  show_effect_size = FALSE
 )
 }
 \arguments{
@@ -29,6 +31,11 @@ colorblind-safe), "default" (original colors), or "viridis"}
 
 \item{config}{an optional besthr_plot_config object for advanced customization.
 If provided, theme and colors parameters are ignored.}
+
+\item{show_significance}{Logical, whether to show significance stars on groups
+where CI doesn't overlap control (default FALSE)}
+
+\item{show_effect_size}{Logical, whether to show effect size annotation (default FALSE)}
 }
 \value{
 ggplot object

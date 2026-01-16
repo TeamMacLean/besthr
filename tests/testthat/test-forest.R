@@ -18,7 +18,9 @@ test_that("plot_forest shows all groups including control", {
   built <- ggplot2::ggplot_build(p)
 
   # Should have data for all 3 groups
-  expect_equal(nrow(built$data[[1]]), 3)
+  # Layer 1 is vline (1 row), layer 2 is pointrange (3 rows)
+  pointrange_layer <- which(sapply(built$data, function(x) nrow(x) == 3))
+  expect_true(length(pointrange_layer) > 0)
 })
 
 test_that("plot_forest respects theme option", {
@@ -107,7 +109,7 @@ test_that("forest plot has horizontal layout", {
 
 test_that("plot_forest works with technical replicates data", {
   set.seed(666)
-  d <- make_data2()
+  d <- make_data3()  # make_data3 has score, sample, rep columns
   hr <- estimate(d, score, sample, rep, control = "A", nits = 100)
   p <- plot_forest(hr)
 

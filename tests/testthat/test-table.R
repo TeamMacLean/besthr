@@ -66,10 +66,10 @@ test_that("besthr_table CI values match hrest object", {
   hr <- estimate(make_data(), score, group, control = "A", nits = 100)
   tbl <- besthr_table(hr)
 
-  # Check treatment group CI
+  # Check treatment group CI (table rounds to 2 decimal places by default)
   b_ci <- hr$ci[hr$ci$group == "B", ]
-  expect_equal(tbl$ci_low[tbl$group == "B"], b_ci$low)
-  expect_equal(tbl$ci_high[tbl$group == "B"], b_ci$high)
+  expect_equal(tbl$ci_low[tbl$group == "B"], round(b_ci$low, 2))
+  expect_equal(tbl$ci_high[tbl$group == "B"], round(b_ci$high, 2))
 })
 
 test_that("besthr_table works with multiple groups", {
