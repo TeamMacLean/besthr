@@ -8,3 +8,5 @@
 Readme*
 .github/
 ^CLAUDE\.md$
+^\.claude$
+^\.idea$
