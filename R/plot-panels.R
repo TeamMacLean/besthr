@@ -265,22 +265,63 @@ build_bootstrap_panel <- function(data_view, config) {
     }
 
   } else {
-    # Gradient style: density with CI shading (no legend)
+    # Gradient style: density in group color with faded tails outside CI
+    # Base density at low alpha (faded tails), then overlay CI region highlight
+
+    # Build data for fading the tails - add rectangles with white overlay
+    # for regions outside CI bounds
+    x_limits <- data_view$rank_limits
+    tail_alpha <- 0.5  # Semi-transparent white to fade tails
+
     p <- ggplot2::ggplot(bootstrap_data) +
-      ggplot2::aes(x = mean, y = !!group_col, fill = factor(after_stat(quantile))) +
-      ggplot2::xlim(data_view$rank_limits) +
-      ggridges::stat_density_ridges(
-        geom = "density_ridges_gradient",
-        calc_ecdf = TRUE,
-        quantiles = c(low, high),
-        alpha = config$density_alpha
-      ) +
-      ggplot2::scale_fill_manual(
-        values = ci_colors,
-        guide = "none"
+      ggplot2::aes(x = mean, y = !!group_col, fill = !!group_col) +
+      ggplot2::xlim(x_limits) +
+      # Main density in group color
+      ggridges::geom_density_ridges(
+        alpha = config$density_alpha,
+        scale = 0.9,
+        colour = NA
       ) +
       ggplot2::coord_flip() +
-      theme_besthr(config$theme_style)
+      theme_besthr(config$theme_style) +
+      ggplot2::guides(fill = "none")
+
+    # Add semi-transparent white overlay on the tails (outside CI)
+    # This creates the "faded" effect for regions outside the CI
+    p <- p +
+      # Left tail (below low CI bound)
+      ggplot2::geom_rect(
+        data = ci_data,
+        mapping = ggplot2::aes(
+          xmin = x_limits[1],
+          xmax = low,
+          ymin = as.numeric(!!group_col) - 0.45,
+          ymax = as.numeric(!!group_col) + 0.45
+        ),
+        fill = "white",
+        alpha = tail_alpha,
+        inherit.aes = FALSE
+      ) +
+      # Right tail (above high CI bound)
+      ggplot2::geom_rect(
+        data = ci_data,
+        mapping = ggplot2::aes(
+          xmin = high,
+          xmax = x_limits[2],
+          ymin = as.numeric(!!group_col) - 0.45,
+          ymax = as.numeric(!!group_col) + 0.45
+        ),
+        fill = "white",
+        alpha = tail_alpha,
+        inherit.aes = FALSE
+      )
+
+    # Apply color palette with drop = FALSE to maintain color consistency
+    if (config$color_palette != "default") {
+      p <- p + scale_fill_besthr(config$color_palette, drop = FALSE)
+    } else {
+      p <- p + ggplot2::scale_fill_discrete(drop = FALSE)
+    }
   }
 
   p
