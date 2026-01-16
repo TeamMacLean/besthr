@@ -90,46 +90,58 @@ hr_est_3 %>%
 
 ## Built-in Themes and Color Palettes
 
-besthr includes built-in themes and colorblind-safe color palettes that can be applied directly through the `plot()` function.
+besthr uses a modern, colorblind-safe appearance by default. You can customize the look using themes and color palettes.
 
 ### Theme Options
 
 Use the `theme` parameter to change the overall visual style:
 
-- `"classic"` (default) - The original besthr appearance
-- `"modern"` - A cleaner, contemporary style with refined typography and grid
+- `"modern"` (default) - A clean, contemporary style with refined typography
+- `"classic"` - The original besthr appearance (for backward compatibility)
 
 ```{r, fig.width=8, fig.height=6}
-# Classic theme (default - same as before)
-plot(hr_est_1, theme = "classic")
+# Modern theme (default)
+plot(hr_est_1)
 
-# Modern theme
-plot(hr_est_1, theme = "modern")
+# Classic theme (original style)
+plot(hr_est_1, theme = "classic")
 ```
 
 ### Color Palette Options
 
 Use the `colors` parameter to change the color palette:
 
-- `"default"` - Original besthr colors
-- `"okabe_ito"` - Colorblind-safe Okabe-Ito palette
+- `"okabe_ito"` (default) - Colorblind-safe Okabe-Ito palette
+- `"default"` - Original besthr colors (for backward compatibility)
 - `"viridis"` - Viridis color scale
 
 ```{r, fig.width=8, fig.height=6}
-# Colorblind-safe palette
-plot(hr_est_1, colors = "okabe_ito")
+# Default is already colorblind-safe
+plot(hr_est_1)
+
+# Original colors
+plot(hr_est_1, colors = "default")
 
 # Viridis palette
 plot(hr_est_1, colors = "viridis")
 ```
 
-### Combining Theme and Colors
+### Quick Style Presets
 
-You can combine both options for a fully customized look:
+For easy customization without understanding all options, use preset styles:
 
 ```{r, fig.width=8, fig.height=6}
-# Modern theme with colorblind-safe colors
-plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+# Publication-ready style
+plot(hr_est_1, config = besthr_style("publication"))
+
+# Presentation style (larger elements)
+plot(hr_est_1, config = besthr_style("presentation"))
+
+# Density style (gradient density instead of points)
+plot(hr_est_1, config = besthr_style("density"))
+
+# See all available styles
+list_besthr_styles()
 ```
 
 ### Using besthr Palettes Directly
@@ -203,6 +215,132 @@ p[[2]] <- p[[2]] + scale_fill_manual(
   guide = guide_legend(reverse=TRUE)
   )
 p
+```
+
+## Advanced Configuration
+
+For users who need fine-grained control over plot appearance, besthr provides a configuration system.
+
+### Using besthr_plot_config
+
+The `besthr_plot_config()` function creates a configuration object that controls all aspects of plot appearance:
+
+```{r}
+# Create a custom configuration
+cfg <- besthr_plot_config(
+  panel_widths = c(2, 1),        # Make data panel wider than bootstrap panel
+  point_size_range = c(3, 10),   # Larger points
+  point_alpha = 0.9,             # More opaque points
+  mean_line_width = 1.5,         # Thicker mean lines
+  theme_style = "modern",
+  color_palette = "okabe_ito"
+)
+
+print(cfg)
+```
+
+```{r, fig.width=8, fig.height=6}
+# Use the configuration in plot
+plot(hr_est_1, config = cfg)
+```
+
+You can update an existing configuration with `update_config()`:
+
+```{r, fig.width=8, fig.height=6}
+# Modify just one setting
+cfg2 <- update_config(cfg, panel_widths = c(1, 2))
+plot(hr_est_1, config = cfg2)
+```
+
+### Configuration Options
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `panel_widths` | `c(1, 1)` | Relative widths of observation and bootstrap panels |
+| `y_limits` | `NULL` (auto) | Fixed y-axis limits, or NULL for automatic |
+| `y_expand` | `0.05` | Proportional expansion of y-axis limits |
+| `point_size_range` | `c(2, 8)` | Min/max point sizes based on count |
+| `point_alpha` | `0.8` | Point transparency (0-1) |
+| `mean_line_type` | `3` | Line type for mean indicators |
+| `mean_line_width` | `1` | Line width for mean indicators |
+| `density_alpha` | `0.7` | Bootstrap density transparency |
+| `density_style` | `"points"` | Density display: "points" (jittered bootstrap), "gradient", or "solid" |
+| `theme_style` | `"modern"` | Theme: "classic" or "modern" |
+| `color_palette` | `"okabe_ito"` | Colors: "default", "okabe_ito", or "viridis" |
+
+## Building Custom Plots
+
+For maximum flexibility, you can build plots from individual components.
+
+### Using besthr_data_view
+
+The `besthr_data_view()` function extracts all plotting data from an hrest object with unified axis limits:
+
+```{r}
+# Create a data view
+dv <- besthr_data_view(hr_est_1)
+print(dv)
+
+# Access the data
+head(dv$ranked)
+head(dv$bootstrap)
+dv$rank_limits
+```
+
+### Using Panel Builders
+
+You can build individual panels and compose them yourself:
+
+```{r, fig.width=10, fig.height=5}
+library(patchwork)
+
+# Create panels
+cfg <- besthr_plot_config(theme_style = "modern", color_palette = "okabe_ito")
+dv <- besthr_data_view(hr_est_1, cfg)
+
+p1 <- build_observation_panel(dv, cfg, "rank_simulation")
+p2 <- build_bootstrap_panel(dv, cfg)
+
+# Custom composition with different widths
+p1 + p2 + plot_layout(widths = c(3, 1))
+```
+
+## Alternative Visualizations
+
+### Raincloud Plots
+
+The `plot_raincloud()` function provides an alternative visualization showing jittered data points with confidence intervals:
+
+```{r, fig.width=6, fig.height=5}
+plot_raincloud(hr_est_1)
+```
+
+```{r, fig.width=6, fig.height=5}
+# With modern styling
+plot_raincloud(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+### Bootstrap Raincloud
+
+The `plot_bootstrap_raincloud()` function shows the bootstrap distribution as jittered points:
+
+```{r, fig.width=6, fig.height=5}
+plot_bootstrap_raincloud(hr_est_1)
+```
+
+## CI Color Customization
+
+The `derive_ci_colors()` function generates confidence interval colors that harmonize with the selected palette:
+
+```{r}
+# Default CI colors
+derive_ci_colors("default", "classic")
+
+# Okabe-Ito derived CI colors
+derive_ci_colors("okabe_ito", "modern")
+
+# Viridis derived CI colors
+derive_ci_colors("viridis", "classic")
 ```
 
 

@@ -13,6 +13,7 @@ Imports:
     ggplot2,
     ggridges,
     grDevices,
+    grid,
     magrittr,
     patchwork,
     rlang,

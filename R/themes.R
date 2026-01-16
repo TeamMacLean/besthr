@@ -188,5 +188,183 @@ ci_fill_colors <- function(style = "default") {
     return(c("#2166AC99", "#F7F7F799", "#B2182B99"))
   }
 
+
   stop("Unknown style: ", style)
+}
+
+#' Derive CI colors based on palette and theme
+#'
+#' Computes confidence interval fill colors that harmonize with the selected
+#' color palette and theme style. This ensures visual consistency between the
+#' observation panel colors and the bootstrap density shading.
+#'
+#' @param palette Character string specifying the color palette: "default",
+#'   "okabe_ito", or "viridis"
+#' @param theme_style Character string specifying the theme: "classic" or "modern"
+#'
+#' @return A character vector of three hex colors with alpha for low, middle,
+#'   and high CI regions
+#'
+#' @export
+#'
+#' @examples
+#' derive_ci_colors("default", "classic")
+#' derive_ci_colors("okabe_ito", "modern")
+#' derive_ci_colors("viridis", "classic")
+#'
+derive_ci_colors <- function(palette = "default", theme_style = "classic") {
+  # For backward compatibility, default palette uses original CI colors
+  if (palette == "default") {
+    return(ci_fill_colors(if (theme_style == "modern") "modern" else "default"))
+  }
+
+  # Okabe-Ito derived colors (colorblind-safe)
+  if (palette == "okabe_ito") {
+    return(c(
+      "#0072B2AA",  # Blue (low)
+      "#999999AA",  # Gray (middle)
+      "#D55E00AA"   # Vermillion (high)
+    ))
+  }
+
+  # Viridis derived colors
+  if (palette == "viridis") {
+    # viridis returns #RRGGBBAA format, extract RGB and add our alpha
+    viridis_cols <- viridisLite::viridis(3, alpha = 0.67)
+    return(viridis_cols)
+  }
+
+  # Fallback to default
+  ci_fill_colors("default")
+}
+
+#' Apply besthr theme consistently
+#'
+#' Applies the besthr theme and color scales to a ggplot object based on
+#' configuration settings. This ensures consistent theming across all plot
+#' components.
+#'
+#' @param p A ggplot object
+#' @param config A besthr_plot_config object
+#' @param include_fill Logical, whether to apply fill scale (default TRUE)
+#' @param include_color Logical, whether to apply color scale (default TRUE)
+#'
+#' @return The ggplot object with theme and scales applied
+#'
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#' p <- ggplot(mtcars, aes(mpg, wt, color = factor(cyl))) +
+#'   geom_point()
+#' cfg <- besthr_plot_config(theme_style = "modern", color_palette = "okabe_ito")
+#' apply_besthr_theme(p, cfg)
+#'
+apply_besthr_theme <- function(p, config, include_fill = TRUE, include_color = TRUE) {
+  # Apply theme
+  p <- p + theme_besthr(config$theme_style)
+
+  # Apply color scales if not default (to preserve backward compatibility)
+  if (config$color_palette != "default") {
+    if (include_color) {
+      p <- p + scale_color_besthr(config$color_palette)
+    }
+    if (include_fill) {
+      p <- p + scale_fill_besthr(config$color_palette)
+    }
+  }
+
+  p
+}
+
+#' Get a preset plot style
+#'
+#' Returns a pre-configured \code{besthr_plot_config} object with sensible
+#' defaults for common use cases. This is the easiest way to customize
+#' besthr plot appearance without understanding all the configuration options.
+#'
+#' @param style Character string specifying the style preset:
+#'   \itemize{
+#'     \item "default" - Modern theme with colorblind-safe colors (recommended)
+#'     \item "classic" - Original besthr appearance for backward compatibility
+#'     \item "publication" - Clean style suitable for journal figures
+#'     \item "presentation" - Larger elements for slides
+#'     \item "density" - Uses gradient density instead of points for bootstrap
+#'   }
+#'
+#' @return A \code{besthr_plot_config} object
+#'
+#' @export
+#'
+#' @examples
+#' d <- make_data()
+#' hr <- estimate(d, score, group)
+#'
+#' # Quick styling with presets
+#' plot(hr, config = besthr_style("publication"))
+#' plot(hr, config = besthr_style("presentation"))
+#' plot(hr, config = besthr_style("density"))
+#'
+#' # Same as default
+#' plot(hr, config = besthr_style("default"))
+#'
+besthr_style <- function(style = "default") {
+  styles <- list(
+    default = besthr_plot_config(
+      theme_style = "modern",
+      color_palette = "okabe_ito"
+    ),
+    classic = besthr_plot_config(
+      theme_style = "classic",
+      color_palette = "default"
+    ),
+    publication = besthr_plot_config(
+      theme_style = "modern",
+      color_palette = "okabe_ito",
+      point_size_range = c(2, 6),
+      point_alpha = 0.9,
+      density_alpha = 0.6
+    ),
+    presentation = besthr_plot_config(
+      theme_style = "modern",
+      color_palette = "okabe_ito",
+      point_size_range = c(4, 12),
+      point_alpha = 0.9,
+      mean_line_width = 1.5
+    ),
+    density = besthr_plot_config(
+      theme_style = "modern",
+      color_palette = "okabe_ito",
+      density_style = "gradient"
+    )
+  )
+
+  if (!style %in% names(styles)) {
+    stop("Unknown style: '", style, "'. ",
+         "Choose from: ", paste(names(styles), collapse = ", "))
+  }
+
+  styles[[style]]
+}
+
+#' List available style presets
+#'
+#' Shows all available preset styles that can be used with \code{besthr_style()}.
+#'
+#' @return A character vector of style names (invisibly)
+#'
+#' @export
+#'
+#' @examples
+#' list_besthr_styles()
+#'
+list_besthr_styles <- function() {
+  cat("Available besthr style presets:\n\n")
+  cat("  'default'       Modern theme with colorblind-safe colors (recommended)\n")
+  cat("  'classic'       Original besthr appearance\n")
+  cat("  'publication'   Clean style for journal figures\n")
+  cat("  'presentation'  Larger elements for slides\n")
+  cat("  'density'       Gradient density display for bootstrap\n")
+  cat("\nUsage: plot(hr, config = besthr_style('publication'))\n")
+  invisible(c("default", "classic", "publication", "presentation", "density"))
 }

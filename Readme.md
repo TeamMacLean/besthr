@@ -86,7 +86,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.42375, 8.305
+    ##  4.36875, 8.27875
     ## 
     ## 100 bootstrap resamples.
 
@@ -94,9 +94,9 @@ hr_est_1
 plot(hr_est_1)
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 ### Setting Options
 
@@ -108,9 +108,9 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.383
+    ## Picking joint bandwidth of 0.334
 
-![](Readme_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 You may select the number of iterations of the bootstrap to perform with
 `nits` and the quantiles for the confidence interval with `low` and
@@ -121,9 +121,9 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
   plot()
 ```
 
-    ## Picking joint bandwidth of 0.265
+    ## Picking joint bandwidth of 0.261
 
-![](Readme_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 ## Extended Use Case - Technical Replicates
 
@@ -174,7 +174,7 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.33333333333333, 2.66666666666667
+    ##  1, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
@@ -187,9 +187,9 @@ hr_est_3
 plot(hr_est_3)
 ```
 
-    ## Picking joint bandwidth of 0.168
+    ## Picking joint bandwidth of 0.171
 
-![](Readme_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ### Alternate Plot Options
 
@@ -203,9 +203,9 @@ hr_est_3 %>%
   plot(which = "just_data")
 ```
 
-    ## Picking joint bandwidth of 0.168
+    ## Picking joint bandwidth of 0.171
 
-![](Readme_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 ## Built-in Themes and Color Palettes
 
@@ -225,18 +225,18 @@ Use the `theme` parameter to change the overall visual style:
 plot(hr_est_1, theme = "classic")
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 # Modern theme
 plot(hr_est_1, theme = "modern")
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
 
 ### Color Palette Options
 
@@ -251,18 +251,18 @@ Use the `colors` parameter to change the color palette:
 plot(hr_est_1, colors = "okabe_ito")
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 # Viridis palette
 plot(hr_est_1, colors = "viridis")
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
 
 ### Combining Theme and Colors
 
@@ -273,9 +273,9 @@ You can combine both options for a fully customized look:
 plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ### Using besthr Palettes Directly
 
@@ -324,17 +324,17 @@ p + plot_annotation(title = 'A stylish besthr plot',
                     caption = 'Though this example is not meaningful')
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
 
 ### Targetting a subplot to make theme changes
 
@@ -357,9 +357,9 @@ p[[1]] <- p[[1]] + theme(axis.title.y = element_text(family = "Times", colour="b
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ### Changing the scale colours of a subplot
 
@@ -376,9 +376,9 @@ p[[1]] <- p[[1]] + scale_colour_manual(values = c("blue", "#440000"))
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 p[[1]] <- p[[1]] + scale_colour_viridis_d()
@@ -391,9 +391,9 @@ p[[1]] <- p[[1]] + scale_colour_viridis_d()
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-2.png)<!-- -->
 
 ``` r
 p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
@@ -406,9 +406,9 @@ p[[1]] <- p[[1]] + scale_colour_brewer(type="qual", palette="Accent")
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-3.png)<!-- -->
 
 For the percentile plot, use only `scale_colour_manual()` with specified
 colours. Annoyingly, this rewrites the other values associated with the
@@ -429,6 +429,6 @@ p[[2]] <- p[[2]] + scale_fill_manual(
 p
 ```
 
-    ## Picking joint bandwidth of 0.374
+    ## Picking joint bandwidth of 0.378
 
-![](Readme_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->

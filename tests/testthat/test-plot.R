@@ -38,3 +38,27 @@ test_that("plot.hrest uses patchwork for layout", {
   # patchwork objects are both patchwork and ggplot
   expect_s3_class(p, "patchwork")
 })
+
+test_that("plot.hrest works with config parameter", {
+  d <- make_data()
+  hr <- estimate(d, score, group, nits = 10)
+  cfg <- besthr_plot_config(
+    panel_widths = c(2, 1),
+    theme_style = "modern",
+    color_palette = "okabe_ito"
+  )
+  p <- plot(hr, config = cfg)
+
+  expect_s3_class(p, "ggplot")
+  expect_s3_class(p, "patchwork")
+})
+
+test_that("plot.hrest config overrides theme and colors params", {
+  d <- make_data()
+  hr <- estimate(d, score, group, nits = 10)
+  cfg <- besthr_plot_config(theme_style = "modern", color_palette = "okabe_ito")
+
+  # When config is provided, theme and colors params are ignored
+  p <- plot(hr, theme = "classic", colors = "default", config = cfg)
+  expect_s3_class(p, "ggplot")
+})
