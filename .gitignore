@@ -7,3 +7,9 @@ doc
 Meta
 /doc/
 /Meta/
+
+# IDE files
+.idea/
+
+# Claude Code files
+.claude/
