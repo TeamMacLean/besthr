@@ -1,12 +1,12 @@
 besthr - Generating Bootstrap Estimation Distributions of HR Data
 ================
 Dan MacLean
-16 January, 2026
+11 March, 2026
 
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
 [![R-CMD-check](https://github.com/TeamMacLean/besthr/workflows/R-CMD-check/badge.svg)](https://github.com/TeamMacLean/besthr/actions)
-[![codecov](https://codecov.io/gh/TeamMacLean/besthr/branch/master/graph/badge.svg)](https://codecov.io/gh/TeamMacLean/besthr)
+[![codecov](https://codecov.io/gh/TeamMacLean/besthr/branch/develop/graph/badge.svg)](https://codecov.io/gh/TeamMacLean/besthr)
 <!-- badges: end -->
 
 ## Synopsis
@@ -87,7 +87,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  4.17375, 8.0575
+    ##  3.7875, 8.105
     ## 
     ## 100 bootstrap resamples.
 
@@ -97,7 +97,7 @@ plot(hr_est_1)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](figures/unnamed-chunk-2-1.png)<!-- -->
 
 ### Setting Options
 
@@ -111,7 +111,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](figures/unnamed-chunk-3-1.png)<!-- -->
 
 You may select the number of iterations of the bootstrap to perform with
 `nits` and the quantiles for the confidence interval with `low` and
@@ -124,7 +124,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
 
     ## Confidence interval: 40.0% - 60.0%
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](figures/unnamed-chunk-4-1.png)<!-- -->
 
 ## Extended Use Case - Technical Replicates
 
@@ -175,7 +175,7 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1, 3
+    ##  1.15833333333333, 2.84166666666666
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
@@ -190,7 +190,7 @@ plot(hr_est_3)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](figures/unnamed-chunk-5-1.png)<!-- -->
 
 ### Alternate Plot Options
 
@@ -206,7 +206,7 @@ hr_est_3 %>%
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](figures/unnamed-chunk-6-1.png)<!-- -->
 
 ## Built-in Themes and Color Palettes
 
@@ -228,7 +228,7 @@ plot(hr_est_1, theme = "classic")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](figures/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 # Modern theme
@@ -237,7 +237,7 @@ plot(hr_est_1, theme = "modern")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-7-2.png)<!-- -->
+![](figures/unnamed-chunk-7-2.png)<!-- -->
 
 ### Color Palette Options
 
@@ -254,7 +254,7 @@ plot(hr_est_1, colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](figures/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 # Viridis palette
@@ -263,7 +263,7 @@ plot(hr_est_1, colors = "viridis")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-8-2.png)<!-- -->
+![](figures/unnamed-chunk-8-2.png)<!-- -->
 
 ### Combining Theme and Colors
 
@@ -276,7 +276,7 @@ plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](figures/unnamed-chunk-9-1.png)<!-- -->
 
 ### Using besthr Palettes Directly
 
@@ -316,7 +316,7 @@ plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](figures/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 # Classic appearance
@@ -325,7 +325,7 @@ plot(hr_est_1, theme = "classic", colors = "default")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-11-2.png)<!-- -->
+![](figures/unnamed-chunk-11-2.png)<!-- -->
 
 ``` r
 # Viridis color scheme
@@ -334,7 +334,7 @@ plot(hr_est_1, colors = "viridis")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-11-3.png)<!-- -->
+![](figures/unnamed-chunk-11-3.png)<!-- -->
 
 ### Adding Titles and Annotations
 
@@ -357,7 +357,7 @@ p + plot_annotation(
 )
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](figures/unnamed-chunk-12-1.png)<!-- -->
 
 ## Raincloud Plot
 
@@ -368,7 +368,7 @@ For a combined view of raw data points with summary statistics, use
 plot_raincloud(hr_est_1)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](figures/unnamed-chunk-13-1.png)<!-- -->
 
 ## Significance and Effect Size Annotations
 
@@ -400,7 +400,7 @@ plot(hr_effect, show_significance = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](figures/unnamed-chunk-15-1.png)<!-- -->
 
 ### Effect Size Annotation
 
@@ -412,7 +412,7 @@ plot(hr_effect, show_effect_size = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](figures/unnamed-chunk-16-1.png)<!-- -->
 
 ### Computing Statistics Directly
 
@@ -435,7 +435,7 @@ compute_effect_size(hr_est_1)
 
     ##   group effect effect_ci_low effect_ci_high
     ## 1     A     NA            NA             NA
-    ## 2     B   -8.8     -10.72625        -6.8425
+    ## 2     B   -8.8      -11.1125         -6.795
 
 ## Summary Tables
 
@@ -474,7 +474,7 @@ Generate tables in various formats for publication:
 besthr_table(hr_est_1, format = "markdown")
 ```
 
-    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 4.17 | 8.06 | -8.8 |"
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.79 | 8.1 | -8.8 |"
 
 ``` r
 # HTML format
