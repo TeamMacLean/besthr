@@ -1,0 +1,1 @@
+exclusions: list("R/utils-pipe.R", "tests/testthat.R")
