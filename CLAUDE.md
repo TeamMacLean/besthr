@@ -95,6 +95,51 @@ User Data (tibble)
 | `tests/testthat/` | Test files for all exported functions |
 | `vignettes/basic-use.Rmd` | User-facing vignette |
 
+## README Generation (Critical)
+
+### **Proper README Workflow**
+
+The GitHub README is generated from `README.Rmd` (NOT `Readme.Rmd`). Follow this exact process:
+
+**📝 File Requirements:**
+- **Source**: `README.Rmd` (uppercase R - GitHub standard)
+- **Output**: `README.md` (uppercase R - required for GitHub display)
+- **Figures**: Must go in `figures/` directory (not `README_files/figure-gfm/`)
+
+**🔧 Essential Setup in README.Rmd:**
+```r
+# REQUIRED: knitr setup chunk for figure paths
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.path = "figures/")
+```
+
+# REQUIRED: Badges in source Rmd (NOT just in generated .md)
+<!-- badges: start -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
+[![R-CMD-check](https://github.com/TeamMacLean/besthr/workflows/R-CMD-check/badge.svg)](https://github.com/TeamMacLean/besthr/actions)
+[![codecov](https://codecov.io/gh/TeamMacLean/besthr/branch/develop/graph/badge.svg)](https://codecov.io/gh/TeamMacLean/besthr)
+<!-- badges: end -->
+```
+
+**🚀 Regeneration Commands:**
+```r
+# ALWAYS load package first (functions needed for examples)
+devtools::load_all()
+rmarkdown::render('README.Rmd')
+```
+
+**✅ Verification Checklist:**
+- [ ] README.md shows `![](figures/...)` paths (NOT `README_files/figure-gfm/`)
+- [ ] All badges appear in README.md
+- [ ] Figures directory `figures/` contains all referenced images
+- [ ] Git tracks `README.md` and `README.Rmd` (uppercase R)
+
+**❌ Common Pitfalls:**
+- Using `Readme.Rmd` (lowercase) - GitHub won't find it
+- Missing `fig.path = "figures/"` - creates broken figure paths
+- Adding badges only to .md file - disappears on regeneration
+- Not loading package first - function examples fail
+
 ## Development Guidelines
 
 ### Backward Compatibility (Critical)
