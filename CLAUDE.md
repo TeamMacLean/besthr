@@ -158,6 +158,17 @@ This is a CRAN package. Any change must preserve existing behavior:
 - Document with roxygen2 (`#'` comments)
 - Internal functions marked with `@keywords internal`
 
+### Communication Style
+
+**For future Claude sessions:**
+- Be concise and direct
+- Avoid unnecessary lists and verbose explanations
+- Minimize bombast and excessive enthusiasm
+- Stay factual and confirm agreement before proceeding
+- Establish clear plans with defined success criteria before starting work
+- Follow agreed plans without deviation - discuss any changes first
+- Include testable endpoints so we know when the plan succeeds
+
 ### Adding Parameters to Existing Functions
 
 ```r
