@@ -6,6 +6,7 @@ Dan MacLean
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
 [![R-CMD-check](https://github.com/TeamMacLean/besthr/workflows/R-CMD-check/badge.svg)](https://github.com/TeamMacLean/besthr/actions)
+[![codecov](https://codecov.io/gh/TeamMacLean/besthr/branch/master/graph/badge.svg)](https://codecov.io/gh/TeamMacLean/besthr)
 <!-- badges: end -->
 
 ## Synopsis
