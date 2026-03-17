@@ -140,6 +140,67 @@ rmarkdown::render('README.Rmd')
 - Adding badges only to .md file - disappears on regeneration
 - Not loading package first - function examples fail
 
+## Documentation Workflow
+
+### pkgdown Site Generation
+
+The package documentation site is automatically built and deployed via GitHub Actions:
+
+**🚀 Automated Deployment:**
+- **Workflow**: `.github/workflows/pkgdown.yaml`
+- **Triggers**: Push to main/master/develop, PRs, releases, manual dispatch
+- **Output**: GitHub Pages site with full function reference and articles
+- **URL**: Auto-deployed to `https://teammacLean.github.io/besthr/`
+
+**🔧 Local Development:**
+```r
+# Install pkgdown if needed
+install.packages("pkgdown")
+
+# Build site locally (creates docs/ directory)
+pkgdown::build_site()
+
+# Preview site
+pkgdown::preview_site()
+```
+
+**⚙️ Configuration:**
+- **Config File**: `_pkgdown.yml` - Bootstrap 5, custom navbar, URL configuration
+- **Bootstrap**: Updated to Bootstrap 5 (replacing deprecated Bootstrap 3)
+- **URL**: Configured for GitHub Pages deployment
+
+**✅ Site Contents:**
+- Function reference from all `.Rd` files
+- Vignette articles from `vignettes/`
+- README as homepage
+- Automatic linking between functions
+- Search functionality
+
+### CRAN Release Automation
+
+The package includes automated CRAN release preparation:
+
+**🚀 Release Workflow:**
+- **Workflow**: `.github/workflows/release.yaml`
+- **Trigger**: GitHub release publication
+- **Actions**: Full `--as-cran` check, source package build, artifact upload
+- **Output**: Ready-to-submit `.tar.gz` package with validation confirmation
+
+**🔧 Release Process:**
+```bash
+# 1. Update version in DESCRIPTION
+# 2. Update NEWS.md (if exists)
+# 3. Create GitHub release
+gh release create v0.x.y --title "Release v0.x.y" --notes "Release notes"
+
+# 4. Workflow automatically:
+#    - Runs full CRAN checks
+#    - Builds source package
+#    - Uploads as artifact
+
+# 5. Download artifact and submit to CRAN
+```
+
 ## Development Guidelines
 
 ### Backward Compatibility (Critical)
@@ -197,9 +258,14 @@ When adding themes or visual options:
 
 ### GitHub Actions Workflows
 
+The CI/CD pipeline is now complete with the following workflows:
+
 - **R-CMD-check.yaml**: Matrix testing across R versions and platforms
 - **test-coverage.yaml**: Coverage reporting via codecov
 - **lint.yaml**: Static analysis with lintr
+- **code-quality.yaml**: Comprehensive code quality checks (linting, spelling, documentation)
+- **pkgdown.yaml**: Automated documentation site generation and deployment
+- **release.yaml**: CRAN submission automation workflow
 
 ### Pre-commit Checks
 

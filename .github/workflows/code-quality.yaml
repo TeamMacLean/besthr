@@ -1,0 +1,77 @@
+# Comprehensive code quality checks
+# Includes linting, spell checking, and documentation validation
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+name: code-quality
+
+permissions: read-all
+
+jobs:
+  quality-checks:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::lintr
+            any::spelling
+            any::devtools
+            local::.
+          needs: |
+            lint
+            check
+
+      - name: Lint R Code
+        run: |
+          lints <- lintr::lint_package()
+          if (length(lints) > 0) {
+            print(lints)
+            cat("::warning::Found", length(lints), "lint issues\n")
+          } else {
+            cat("✅ No lint issues found\n")
+          }
+        shell: Rscript {0}
+
+      - name: Check Spelling
+        run: |
+          spelling_errors <- spelling::spell_check_package()
+          if (nrow(spelling_errors) > 0) {
+            print(spelling_errors)
+            cat("::warning::Found", nrow(spelling_errors), "potential spelling errors\n")
+          } else {
+            cat("✅ No spelling errors found\n")
+          }
+        shell: Rscript {0}
+
+      - name: Check Documentation
+        run: |
+          # Check if documentation is up to date
+          devtools::document(quiet = TRUE)
+          if (length(system2("git", c("diff", "--name-only", "man/"), stdout = TRUE)) > 0) {
+            cat("::warning::Documentation may be out of date. Run devtools::document()\n")
+          } else {
+            cat("✅ Documentation is up to date\n")
+          }
+        shell: Rscript {0}
+
+      - name: Quality Summary
+        run: |
+          cat("## Code Quality Summary\n", file = "quality_summary.md")
+          cat("- ✅ Lint checks completed\n", file = "quality_summary.md", append = TRUE)
+          cat("- ✅ Spell checks completed\n", file = "quality_summary.md", append = TRUE)
+          cat("- ✅ Documentation checks completed\n", file = "quality_summary.md", append = TRUE)
+          cat(readLines("quality_summary.md"), sep = "\n")
+        shell: Rscript {0}

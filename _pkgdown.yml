@@ -1,0 +1,20 @@
+url: https://teammacLean.github.io/besthr/
+
+template:
+  bootstrap: 5
+
+home:
+  title: besthr - Bootstrap Estimation for HR Data
+  description: >
+    Generate bootstrap estimation distributions of HR (Hypersensitive Response)
+    data from plant pathology experiments with publication-ready visualizations.
+
+navbar:
+  structure:
+    left:  [intro, reference, articles, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/TeamMacLean/besthr
+      aria-label: GitHub
