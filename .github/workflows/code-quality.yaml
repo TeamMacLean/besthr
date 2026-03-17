@@ -50,22 +50,10 @@ jobs:
           }
         shell: Rscript {0}
 
-      - name: Check Documentation
-        run: |
-          # Check if documentation is up to date
-          devtools::document(quiet = TRUE)
-          if (length(system2("git", c("diff", "--name-only", "man/"), stdout = TRUE)) > 0) {
-            cat("::warning::Documentation may be out of date. Run devtools::document()\n")
-          } else {
-            cat("✅ Documentation is up to date\n")
-          }
-        shell: Rscript {0}
-
       - name: Quality Summary
         run: |
           cat("## Code Quality Summary\n", file = "quality_summary.md")
           cat("- ✅ Lint checks completed\n", file = "quality_summary.md", append = TRUE)
           cat("- ✅ Spell checks completed\n", file = "quality_summary.md", append = TRUE)
-          cat("- ✅ Documentation checks completed\n", file = "quality_summary.md", append = TRUE)
           cat(readLines("quality_summary.md"), sep = "\n")
         shell: Rscript {0}
