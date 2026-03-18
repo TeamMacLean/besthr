@@ -97,7 +97,7 @@ plot(hr_est_1)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/unnamed-chunk-2-1.png)<!-- -->
 
 ### Setting Options
 
@@ -111,7 +111,7 @@ estimate(hr_data_1, score, group, control = "B" ) %>%
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-3-1.png)<!-- -->
+![](man/figures/unnamed-chunk-3-1.png)<!-- -->
 
 You may select the number of iterations of the bootstrap to perform with
 `nits` and the quantiles for the confidence interval with `low` and
@@ -124,7 +124,7 @@ estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 
 
     ## Confidence interval: 40.0% - 60.0%
 
-![](figures/unnamed-chunk-4-1.png)<!-- -->
+![](man/figures/unnamed-chunk-4-1.png)<!-- -->
 
 ## Extended Use Case - Technical Replicates
 
@@ -190,7 +190,7 @@ plot(hr_est_3)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-5-1.png)<!-- -->
+![](man/figures/unnamed-chunk-5-1.png)<!-- -->
 
 ### Alternate Plot Options
 
@@ -206,7 +206,7 @@ hr_est_3 %>%
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-6-1.png)<!-- -->
+![](man/figures/unnamed-chunk-6-1.png)<!-- -->
 
 ## Built-in Themes and Color Palettes
 
@@ -228,7 +228,7 @@ plot(hr_est_1, theme = "classic")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-7-1.png)<!-- -->
+![](man/figures/unnamed-chunk-7-1.png)<!-- -->
 
 ``` r
 # Modern theme
@@ -237,7 +237,7 @@ plot(hr_est_1, theme = "modern")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-7-2.png)<!-- -->
+![](man/figures/unnamed-chunk-7-2.png)<!-- -->
 
 ### Color Palette Options
 
@@ -254,7 +254,7 @@ plot(hr_est_1, colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-8-1.png)<!-- -->
+![](man/figures/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 # Viridis palette
@@ -263,7 +263,7 @@ plot(hr_est_1, colors = "viridis")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-8-2.png)<!-- -->
+![](man/figures/unnamed-chunk-8-2.png)<!-- -->
 
 ### Combining Theme and Colors
 
@@ -276,7 +276,7 @@ plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-9-1.png)<!-- -->
+![](man/figures/unnamed-chunk-9-1.png)<!-- -->
 
 ### Using besthr Palettes Directly
 
@@ -316,7 +316,7 @@ plot(hr_est_1, theme = "modern", colors = "okabe_ito")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-11-1.png)<!-- -->
+![](man/figures/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
 # Classic appearance
@@ -325,7 +325,7 @@ plot(hr_est_1, theme = "classic", colors = "default")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-11-2.png)<!-- -->
+![](man/figures/unnamed-chunk-11-2.png)<!-- -->
 
 ``` r
 # Viridis color scheme
@@ -334,7 +334,7 @@ plot(hr_est_1, colors = "viridis")
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-11-3.png)<!-- -->
+![](man/figures/unnamed-chunk-11-3.png)<!-- -->
 
 ### Adding Titles and Annotations
 
@@ -357,7 +357,7 @@ p + plot_annotation(
 )
 ```
 
-![](figures/unnamed-chunk-12-1.png)<!-- -->
+![](man/figures/unnamed-chunk-12-1.png)<!-- -->
 
 ## Raincloud Plot
 
@@ -368,7 +368,7 @@ For a combined view of raw data points with summary statistics, use
 plot_raincloud(hr_est_1)
 ```
 
-![](figures/unnamed-chunk-13-1.png)<!-- -->
+![](man/figures/unnamed-chunk-13-1.png)<!-- -->
 
 ## Significance and Effect Size Annotations
 
@@ -400,7 +400,7 @@ plot(hr_effect, show_significance = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-15-1.png)<!-- -->
+![](man/figures/unnamed-chunk-15-1.png)<!-- -->
 
 ### Effect Size Annotation
 
@@ -412,7 +412,7 @@ plot(hr_effect, show_effect_size = TRUE)
 
     ## Confidence interval: 2.5% - 97.5%
 
-![](figures/unnamed-chunk-16-1.png)<!-- -->
+![](man/figures/unnamed-chunk-16-1.png)<!-- -->
 
 ### Computing Statistics Directly
 

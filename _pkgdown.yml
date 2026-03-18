@@ -3,9 +3,6 @@ url: https://teammacLean.github.io/besthr/
 template:
   bootstrap: 5
 
-# Copy figures directory for README images
-extra:
-  - figures
 
 home:
   title: besthr - Bootstrap Estimation for HR Data

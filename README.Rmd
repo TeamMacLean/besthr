@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(fig.path = "figures/")
+knitr::opts_chunk$set(fig.path = "man/figures/")
 ```
 
   <!-- badges: start -->
