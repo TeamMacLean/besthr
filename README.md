@@ -1,7 +1,7 @@
 besthr - Generating Bootstrap Estimation Distributions of HR Data
 ================
 Dan MacLean
-11 March, 2026
+18 March, 2026
 
 <!-- badges: start -->
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
@@ -32,6 +32,10 @@ Please cite as
 
 > Dan MacLean. (2019). TeamMacLean/besthr: Initial Release (0.3.0).
 > Zenodo. <https://doi.org/10.5281/zenodo.3374507>
+
+## Documentation
+
+Full API docs are available here <https://teammaclean.github.io/besthr/>
 
 ## Simplest Use Case - Two Groups, No Replicates
 
@@ -87,7 +91,7 @@ hr_est_1
     ## Unpaired mean rank difference of A (14.9, n=10) minus B (6.1, n=10)
     ##  8.8
     ## Confidence Intervals (0.025, 0.975)
-    ##  3.7875, 8.105
+    ##  3.96875, 8.42875
     ## 
     ## 100 bootstrap resamples.
 
@@ -175,12 +179,12 @@ hr_est_3
     ## Unpaired mean rank difference of A (5, n=3) minus B (2, n=3)
     ##  3
     ## Confidence Intervals (0.025, 0.975)
-    ##  1.15833333333333, 2.84166666666666
+    ##  1.15833333333333, 3
     ## 
     ## Unpaired mean rank difference of A (5, n=3) minus C (8, n=3)
     ##  -3
     ## Confidence Intervals (0.025, 0.975)
-    ##  7.15833333333333, 9
+    ##  7.33333333333333, 8.66666666666667
     ## 
     ## 100 bootstrap resamples.
 
@@ -435,7 +439,7 @@ compute_effect_size(hr_est_1)
 
     ##   group effect effect_ci_low effect_ci_high
     ## 1     A     NA            NA             NA
-    ## 2     B   -8.8      -11.1125         -6.795
+    ## 2     B   -8.8     -10.93125       -6.47125
 
 ## Summary Tables
 
@@ -474,7 +478,7 @@ Generate tables in various formats for publication:
 besthr_table(hr_est_1, format = "markdown")
 ```
 
-    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.79 | 8.1 | -8.8 |"
+    ## [1] "| group | n | mean_rank | ci_low | ci_high | effect_size |\n| --- | --- | --- | --- | --- | --- |\n| A | 10 | 14.9 | NA | NA | NA |\n| B | 10 |  6.1 | 3.97 | 8.43 | -8.8 |"
 
 ``` r
 # HTML format

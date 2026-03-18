@@ -230,6 +230,47 @@ This is a CRAN package. Any change must preserve existing behavior:
 - Follow agreed plans without deviation - discuss any changes first
 - Include testable endpoints so we know when the plan succeeds
 
+### Error Resolution Methodology
+
+**When First Attempts Fail**
+
+Claude's initial solutions usually work, but when they don't - avoid repeated guessing:
+
+**1. Stop and Investigate Before More Attempts**
+- Don't make additional guesses or "try this instead" changes
+- Research the actual problem systematically
+- Understand what's failing and why
+
+**2. Research-Based Debugging**
+- Use WebSearch to find official documentation for failing components
+- Look up current best practices and known issues
+- Verify syntax, configuration, or approach standards
+
+**3. Test and Debug Systematically**
+- Check what's actually happening (not just what should happen)
+- Test components individually to isolate the problem
+- Verify basic assumptions (files exist? permissions correct? paths right?)
+- Work backwards from symptoms to root cause
+
+**4. Evidence-Based Problem Solving**
+- Each diagnostic step should inform the next
+- Follow the data/process flow from input to output
+- Document findings as you investigate
+- Only implement fixes after understanding the root cause
+
+**Example Pattern**:
+- ❌ First attempt fails → guess different approach → fail → try another guess → repeat
+- ✅ First attempt fails → research documentation → debug actual state → find root cause → targeted fix
+
+**Applies to Any Technical Problem**:
+- Package/dependency installation failures
+- Configuration not working as expected
+- Code errors that persist after initial fixes
+- Development environment issues
+- "It should work but doesn't" scenarios
+
+This prevents frustration cycles and builds reliable solutions through understanding.
+
 ### Adding Parameters to Existing Functions
 
 ```r

@@ -40,6 +40,11 @@ Please cite as
 
 > Dan MacLean. (2019). TeamMacLean/besthr: Initial Release (0.3.0). Zenodo. https://doi.org/10.5281/zenodo.3374507
 
+
+## Documentation
+
+Full API docs are available here https://teammaclean.github.io/besthr/
+
 ## Simplest Use Case - Two Groups, No Replicates
 
 With a data frame or similar object, use the `estimate()` function to get the bootstrap estimates of the ranked data.
