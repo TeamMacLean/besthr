@@ -1,0 +1,312 @@
+---
+title: "besthr - Generating Bootstrap Estimation Distributions of HR Data"
+author: "Dan MacLean"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  github_document:
+    html_preview: false
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(fig.path = "man/figures/")
+```
+
+  <!-- badges: start -->
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3374507.svg)](https://doi.org/10.5281/zenodo.3374507)
+  [![R-CMD-check](https://github.com/TeamMacLean/besthr/workflows/R-CMD-check/badge.svg)](https://github.com/TeamMacLean/besthr/actions)
+  [![codecov](https://codecov.io/gh/TeamMacLean/besthr/branch/develop/graph/badge.svg)](https://codecov.io/gh/TeamMacLean/besthr)
+  <!-- badges: end -->
+
+## Synopsis
+
+besthr is a package that creates plots showing scored HR experiments and plots of distribution of means of ranks of HR score from bootstrapping.
+
+
+## Installation
+
+You can install from CRAN in the usual way.
+
+```{r, eval=FALSE}
+install.packages("besthr")
+
+# or for the dev version
+#install.packages("devtools")
+devtools::install_github("TeamMacLean/besthr")
+```
+
+## Citation
+
+Please cite as 
+
+> Dan MacLean. (2019). TeamMacLean/besthr: Initial Release (0.3.0). Zenodo. https://doi.org/10.5281/zenodo.3374507
+
+
+## Documentation
+
+Full API docs are available here https://teammaclean.github.io/besthr/
+
+## Simplest Use Case - Two Groups, No Replicates
+
+With a data frame or similar object, use the `estimate()` function to get the bootstrap estimates of the ranked data.
+
+`estimate()` has a basic function call as follows:
+
+`estimate(data, score_column_name, group_column_name, control = control_group_name)`
+
+The first argument after the 
+
+```{r, fig.width=8, fig.height=6}
+library(besthr)
+
+hr_data_1_file <- system.file("extdata", "example-data-1.csv", package = "besthr")
+hr_data_1 <- readr::read_csv(hr_data_1_file)
+head(hr_data_1)
+
+hr_est_1 <- estimate(hr_data_1, score, group, control = "A")
+hr_est_1
+
+plot(hr_est_1)
+```
+
+
+### Setting Options
+
+You may select the group to set as the common reference control with `control`.
+
+```{r, fig.width=8, fig.height=6}
+estimate(hr_data_1, score, group, control = "B" ) %>%
+  plot()
+```
+
+You may select the number of iterations of the bootstrap to perform with `nits` and the quantiles for the confidence interval with `low` and `high`.
+
+```{r, fig.width=8, fig.height=6}
+estimate(hr_data_1, score, group, control = "A", nits = 1000, low = 0.4, high = 0.6) %>%
+  plot()
+```
+  
+## Extended Use Case - Technical Replicates
+
+You can extend the `estimate()` options to specify a third column in the data that contains technical replicate information, add the technical replicate column name after the sample column. Technical replicates are automatically merged using the `mean()` function before ranking.
+
+```{r, fig.width=8, fig.height=6}
+
+hr_data_3_file <- system.file("extdata", "example-data-3.csv", package = "besthr")
+hr_data_3 <- readr::read_csv(hr_data_3_file)
+head(hr_data_3)
+
+hr_est_3 <- estimate(hr_data_3, score, sample, rep, control = "A")
+
+hr_est_3
+
+plot(hr_est_3)
+
+```
+
+### Alternate Plot Options
+
+In the case where you have use technical replicates and want to see those plotted you can use an extra plot option `which`. Set `which` to `just_data` if you wish the left panel of the plot to show all data without ranking. This will only work if you have technical replicates.
+
+```{r, fig.width=8, fig.height=6}
+
+hr_est_3 %>%
+  plot(which = "just_data")
+```
+
+## Built-in Themes and Color Palettes
+
+besthr includes built-in themes and colorblind-safe color palettes that can be applied directly through the `plot()` function.
+
+### Theme Options
+
+Use the `theme` parameter to change the overall visual style:
+
+- `"classic"` (default) - The original besthr appearance
+- `"modern"` - A cleaner, contemporary style with refined typography and grid
+
+```{r, fig.width=8, fig.height=6}
+# Classic theme (default - same as before)
+plot(hr_est_1, theme = "classic")
+
+# Modern theme
+plot(hr_est_1, theme = "modern")
+```
+
+### Color Palette Options
+
+Use the `colors` parameter to change the color palette:
+
+- `"default"` - Original besthr colors
+- `"okabe_ito"` - Colorblind-safe Okabe-Ito palette
+- `"viridis"` - Viridis color scale
+
+```{r, fig.width=8, fig.height=6}
+# Colorblind-safe palette
+plot(hr_est_1, colors = "okabe_ito")
+
+# Viridis palette
+plot(hr_est_1, colors = "viridis")
+```
+
+### Combining Theme and Colors
+
+You can combine both options for a fully customized look:
+
+```{r, fig.width=8, fig.height=6}
+# Modern theme with colorblind-safe colors
+plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+```
+
+### Using besthr Palettes Directly
+
+The color palettes can also be used directly in your own ggplot2 code:
+```{r}
+# Get palette colors
+besthr_palette("okabe_ito", n = 4)
+
+# Available palettes
+besthr_palette("default", n = 3)
+besthr_palette("viridis", n = 3)
+```
+
+## Styling Plots
+
+### Recommended: Use Built-in Themes and Colors
+
+The easiest way to style your plots is using the `theme` and `colors` parameters:
+
+```{r, fig.width=8, fig.height=6}
+# Modern look with colorblind-safe colors (this is the default)
+plot(hr_est_1, theme = "modern", colors = "okabe_ito")
+
+# Classic appearance
+plot(hr_est_1, theme = "classic", colors = "default")
+
+# Viridis color scheme
+plot(hr_est_1, colors = "viridis")
+```
+
+### Adding Titles and Annotations
+
+The plot object is a `patchwork` composition. You can add titles using `plot_annotation()`:
+
+```{r, fig.width=8, fig.height=6}
+library(patchwork)
+
+p <- plot(hr_est_1)
+
+p + plot_annotation(
+  title = 'HR Score Analysis',
+  subtitle = "Control vs Treatment",
+  caption = 'Generated with besthr'
+)
+```
+
+## Raincloud Plot
+
+For a combined view of raw data points with summary statistics, use `plot_raincloud()`:
+
+```{r, fig.width=8, fig.height=6}
+plot_raincloud(hr_est_1)
+```
+
+## Significance and Effect Size Annotations
+
+You can add statistical annotations to your plots to highlight significant results.
+
+```{r}
+# Create example data with 3 groups and realistic variation
+set.seed(42)
+d_effect <- data.frame(
+  score = c(
+    sample(1:4, 12, replace = TRUE),   # Group A: low scores (control)
+    sample(4:8, 12, replace = TRUE),   # Group B: medium-high scores
+    sample(6:10, 12, replace = TRUE)   # Group C: high scores
+  ),
+  group = rep(c("A", "B", "C"), each = 12)
+)
+hr_effect <- estimate(d_effect, score, group, control = "A", nits = 1000)
+```
+
+### Significance Stars
+
+Add significance stars to groups where the bootstrap confidence interval does not overlap the control mean:
+
+```{r, fig.width=8, fig.height=6}
+plot(hr_effect, show_significance = TRUE)
+```
+
+### Effect Size Annotation
+
+Display effect size (difference from control) with confidence intervals:
+
+```{r, fig.width=8, fig.height=6}
+plot(hr_effect, show_effect_size = TRUE)
+```
+
+### Computing Statistics Directly
+
+You can also access the significance and effect size calculations directly:
+
+```{r}
+# Compute significance
+compute_significance(hr_est_1)
+
+# Compute effect sizes
+compute_effect_size(hr_est_1)
+```
+
+## Summary Tables
+
+Generate publication-ready summary tables with `besthr_table()`:
+
+```{r}
+# Default tibble format
+besthr_table(hr_effect)
+
+# With significance stars
+besthr_table(hr_effect, include_significance = TRUE)
+```
+
+### Export Formats
+
+Generate tables in various formats for publication:
+
+```{r}
+# Markdown format
+besthr_table(hr_est_1, format = "markdown")
+```
+
+```{r, eval=FALSE}
+# HTML format
+besthr_table(hr_est_1, format = "html")
+
+# LaTeX format
+besthr_table(hr_est_1, format = "latex")
+```
+
+## Publication Export
+
+Save your plots directly to publication-quality files:
+
+```{r, eval=FALSE}
+# Save to PNG (default 300 DPI)
+save_besthr(hr_est_1, "figure1.png")
+
+# Save to PDF
+save_besthr(hr_est_1, "figure1.pdf", width = 10, height = 8)
+
+# Save raincloud plot
+save_besthr(hr_est_1, "raincloud.png", type = "raincloud")
+
+# With custom options
+save_besthr(hr_est_1, "figure1.png",
+            theme = "modern",
+            colors = "okabe_ito",
+            width = 10,
+            height = 6,
+            dpi = 600)
+```
+
+Supported formats: PNG, PDF, SVG, TIFF, JPEG
+
